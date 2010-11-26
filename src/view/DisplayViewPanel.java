@@ -46,6 +46,7 @@ public class DisplayViewPanel extends AbstractViewPanel
         
         this.controller = controller;
         
+        initFrame();
         initComponents();
         localInitialization();
     }
