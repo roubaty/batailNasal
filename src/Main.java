@@ -10,13 +10,9 @@
 
 import controller.DefaultController;
 import model.DocumentModel;
+import model.TextElementModel;
 import view.DisplayViewPanel;
 import view.PropertiesViewPanel;
-import model.TextElementModel;
-import java.awt.BorderLayout;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 /**
  *
@@ -41,21 +37,6 @@ public class Main {
         controller.addModel(documentModel);
         
         textElementModel.initDefault();
-        documentModel.initDefault();        
-        
-        
-        JFrame displayFrame = new JFrame("Display (View 1)");
-        displayFrame.getContentPane().add(displayViewPanel, BorderLayout.CENTER);
-        displayFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        displayFrame.pack();
-        
-        JDialog propertiesDialog = new JDialog(displayFrame, "Properties (View 2)");
-        propertiesDialog.setModal(false);
-        propertiesDialog.getContentPane().add(propertiesViewPanel, BorderLayout.CENTER);
-        propertiesDialog.pack();
-        
-        displayFrame.setVisible(true);
-        propertiesDialog.setVisible(true);
     }
     
     /**
