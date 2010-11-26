@@ -7,7 +7,15 @@
 package view;
 
 import controller.DefaultController;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 
 /**
@@ -22,6 +30,7 @@ public class DisplayViewPanel extends AbstractViewPanel
 {
     //  The controller used by this view
     private DefaultController controller;
+    private JFrame frame;
     
     //  A private inner class that performs the painting of the text
     //  component
@@ -39,6 +48,25 @@ public class DisplayViewPanel extends AbstractViewPanel
         
         initComponents();
         localInitialization();
+    }
+    
+    /**
+     * Initialization method called from the constructor to init the frame
+     */
+    public void initFrame() {
+		frame = new JFrame("Bataille Nasale");
+		// Add a window listner for close button
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		// This is an empty content area in the frame
+		JLabel jlbempty = new JLabel("");
+		jlbempty.setPreferredSize(new Dimension(600, 400));
+		frame.getContentPane().add(jlbempty, BorderLayout.CENTER);
+		frame.pack();
+		frame.setVisible(true);
     }
 
     /**
