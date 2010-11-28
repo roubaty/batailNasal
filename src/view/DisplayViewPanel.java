@@ -12,6 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -22,12 +23,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 
 /**
@@ -68,6 +71,17 @@ ItemListener
 	private JLabel p1NoBigMorves = null;
 	private JLabel p1NoMidMorves = null;
 	private JLabel p1NoLittleMorves = null;
+	private JLabel p2NameLabel = null;
+	private JLabel p2InfoLabel = null;
+	private JLabel p2BigMorveLabel = null;
+	private JLabel p2MidMorveLabel = null;
+	private JLabel p2LittleMorveLabel = null;
+	private JLabel p2NoBigMorves = null;
+	private JLabel p2NoMidMorves = null;
+	private JLabel p2NoLittleMorves = null;
+	private JPanel p1Panel = null;
+	private JPanel p2Panel = null;
+	private JLabel infoLabel;
     
     /**
      * Creates new form TextElementDisplayPanel
@@ -140,9 +154,9 @@ ItemListener
     	menuItemDonate.addActionListener(this);
     	menuHelp.add(menuItemDonate);
     	frame.setJMenuBar(menuBar);
-		frame.add(getPlayerPanel());
-		frame.add(getInfoPanel());
-		frame.add(getGridPanel());
+		frame.add(getPlayerPanel(), null);
+		frame.add(getInfoPanel(), null);
+		frame.add(getGridPanel(), null);
     }
     
     /**
@@ -154,8 +168,33 @@ ItemListener
         
     }
     
-	private JPanel getPlayerPanel() {
+    private JPanel getPlayerPanel() {
 		if (playerPanel == null) {
+			p2NoLittleMorves = new JLabel();
+			p2NoLittleMorves.setBounds(new Rectangle(690, 75, 40, 20));
+			p2NoLittleMorves.setText("Z");
+			p2NoMidMorves = new JLabel();
+			p2NoMidMorves.setBounds(new Rectangle(690, 55, 40, 20));
+			p2NoMidMorves.setText("Y");
+			p2NoBigMorves = new JLabel();
+			p2NoBigMorves.setBounds(new Rectangle(690, 35, 40, 20));
+			p2NoBigMorves.setText("X");
+			p2LittleMorveLabel = new JLabel();
+			p2LittleMorveLabel.setBounds(new Rectangle(570, 75, 110, 20));
+			p2LittleMorveLabel.setText("Petites morves :");
+			p2MidMorveLabel = new JLabel();
+			p2MidMorveLabel.setBounds(new Rectangle(570, 55, 120, 20));
+			p2MidMorveLabel.setText("Moyennes morves :");
+			p2BigMorveLabel = new JLabel();
+			p2BigMorveLabel.setBounds(new Rectangle(570, 35, 120, 20));
+			p2BigMorveLabel.setText("Grosses morves :");
+			p2InfoLabel = new JLabel();
+			p2InfoLabel.setBounds(new Rectangle(570, 10, 150, 20));
+			p2InfoLabel.setText("Morves restantes");
+			p2NameLabel = new JLabel();
+			p2NameLabel.setBounds(new Rectangle(420, 30, 120, 40));
+			p2NameLabel.setText("Player 2");
+			p2NameLabel.setFont(new Font("Serif", Font.BOLD, 24));
 			p1NoBigMorves = new JLabel();
 			p1NoBigMorves.setBounds(new Rectangle(290, 35, 40, 20));
 			p1NoBigMorves.setText("X");
@@ -178,11 +217,21 @@ ItemListener
 			p1InfoLabel.setBounds(new Rectangle(170, 10, 150, 20));
 			p1InfoLabel.setText("Morves restantes");
 			p1NameLabel = new JLabel();
-			p1NameLabel.setBounds(new Rectangle(20, 10, 100, 20));
+			p1NameLabel.setBounds(new Rectangle(20, 30, 120, 40));
 			p1NameLabel.setText("Player 1");
+			p1NameLabel.setFont(new Font("Serif", Font.BOLD, 24));
+			p1Panel = new JPanel();
+			p1Panel.setLayout(new GridBagLayout());
+			p1Panel.setBounds(new Rectangle(5, 5, 360, 100));
+			Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+			p1Panel.setBorder(raisedbevel);
+			p2Panel = new JPanel();
+			p2Panel.setLayout(new GridBagLayout());
+			p2Panel.setBounds(new Rectangle(405, 5, 360, 100));
+			p2Panel.setBorder(raisedbevel);
 			playerPanel = new JPanel();
 			playerPanel.setLayout(null);
-			playerPanel.setSize(new Dimension(800, 100));
+			playerPanel.setSize(new Dimension(800, 110));
 			playerPanel.add(p1NameLabel, null);
 			playerPanel.add(p1InfoLabel, null);
 			playerPanel.add(p1BigMorveLabel, null);
@@ -191,14 +240,30 @@ ItemListener
 			playerPanel.add(p1NoBigMorves, null);
 			playerPanel.add(p1NoMidMorves, null);
 			playerPanel.add(p1NoLittleMorves, null);
+			playerPanel.add(p2NameLabel, null);
+			playerPanel.add(p2InfoLabel, null);
+			playerPanel.add(p2BigMorveLabel, null);
+			playerPanel.add(p2MidMorveLabel, null);
+			playerPanel.add(p2LittleMorveLabel, null);
+			playerPanel.add(p2NoBigMorves, null);
+			playerPanel.add(p2NoMidMorves, null);
+			playerPanel.add(p2NoLittleMorves, null);
+			playerPanel.add(p1Panel, null);
+			playerPanel.add(p2Panel, null);
 		}
 		return playerPanel;
 	}
 	private JPanel getInfoPanel() {
 		if (infoPanel == null) {
+			infoLabel = new JLabel();
+			infoLabel.setBounds(new Rectangle(60, 30, 670, 50));
+			infoLabel.setText("Message sur la partie ...");
+			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
+			infoLabel.setHorizontalAlignment(JLabel.CENTER);
 			infoPanel = new JPanel();
-			infoPanel.setLayout(new GridBagLayout());
+			infoPanel.setLayout(null);
 			infoPanel.setSize(new Dimension(800, 100));
+			infoPanel.add(infoLabel, null);
 		}
 		return infoPanel;
 	}
