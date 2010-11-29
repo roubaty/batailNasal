@@ -57,9 +57,7 @@ ItemListener
     private JMenuItem menuItemEN;
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemDonate;
-    private JPanel playerPanel = null;
-    private JPanel infoPanel = null;
-    private JPanel gridPanel = null;
+    private JPanel battlePanel = null;
 	private JPanel jPanel1 = null;
 	private JPanel jPanel2 = null;
 	private JLabel jLabel1 = null;
@@ -82,6 +80,9 @@ ItemListener
 	private JPanel p1Panel = null;
 	private JPanel p2Panel = null;
 	private JLabel infoLabel;
+	private JPanel infoPanel;
+	private JPanel grid1Panel;
+	private JPanel grid2Panel;
     
     /**
      * Creates new form TextElementDisplayPanel
@@ -108,7 +109,7 @@ ItemListener
 				System.exit(0);
 			}
 		});
-		frame.setPreferredSize(new Dimension(800, 500));
+		frame.setPreferredSize(new Dimension(800, 550));
 		frame.pack();
 		frame.setVisible(true);
     }
@@ -154,9 +155,7 @@ ItemListener
     	menuItemDonate.addActionListener(this);
     	menuHelp.add(menuItemDonate);
     	frame.setJMenuBar(menuBar);
-		frame.add(getPlayerPanel(), null);
-		frame.add(getInfoPanel(), null);
-		frame.add(getGridPanel(), null);
+		frame.add(getBattlePanel(), null);
     }
     
     /**
@@ -168,8 +167,8 @@ ItemListener
         
     }
     
-    private JPanel getPlayerPanel() {
-		if (playerPanel == null) {
+    private JPanel getBattlePanel() {
+		if (battlePanel == null) {
 			p2NoLittleMorves = new JLabel();
 			p2NoLittleMorves.setBounds(new Rectangle(690, 75, 40, 20));
 			p2NoLittleMorves.setText("Z");
@@ -229,52 +228,48 @@ ItemListener
 			p2Panel.setLayout(new GridBagLayout());
 			p2Panel.setBounds(new Rectangle(405, 5, 360, 100));
 			p2Panel.setBorder(raisedbevel);
-			playerPanel = new JPanel();
-			playerPanel.setLayout(null);
-			playerPanel.setSize(new Dimension(800, 110));
-			playerPanel.add(p1NameLabel, null);
-			playerPanel.add(p1InfoLabel, null);
-			playerPanel.add(p1BigMorveLabel, null);
-			playerPanel.add(p1MidMorveLabel, null);
-			playerPanel.add(p1LittleMorveLabel, null);
-			playerPanel.add(p1NoBigMorves, null);
-			playerPanel.add(p1NoMidMorves, null);
-			playerPanel.add(p1NoLittleMorves, null);
-			playerPanel.add(p2NameLabel, null);
-			playerPanel.add(p2InfoLabel, null);
-			playerPanel.add(p2BigMorveLabel, null);
-			playerPanel.add(p2MidMorveLabel, null);
-			playerPanel.add(p2LittleMorveLabel, null);
-			playerPanel.add(p2NoBigMorves, null);
-			playerPanel.add(p2NoMidMorves, null);
-			playerPanel.add(p2NoLittleMorves, null);
-			playerPanel.add(p1Panel, null);
-			playerPanel.add(p2Panel, null);
-		}
-		return playerPanel;
-	}
-	private JPanel getInfoPanel() {
-		if (infoPanel == null) {
-			infoLabel = new JLabel();
-			infoLabel.setBounds(new Rectangle(60, 30, 670, 50));
-			infoLabel.setText("Message sur la partie ...");
-			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
-			infoLabel.setHorizontalAlignment(JLabel.CENTER);
 			infoPanel = new JPanel();
-			infoPanel.setLayout(null);
-			infoPanel.setSize(new Dimension(800, 100));
+			infoPanel.setBorder(raisedbevel);
+			infoPanel.setBounds(new Rectangle(5, 110, 760, 50));
+			infoLabel = new JLabel();
+			infoLabel.setBounds(new Rectangle(10, 120, 750, 40));
+			infoLabel.setText("Informations sur la partie ...");
+			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 			infoPanel.add(infoLabel, null);
+			grid1Panel = new JPanel();
+			grid1Panel.setBounds(new Rectangle(5, 165, 360, 310));
+			grid1Panel.setBorder(BorderFactory.createRaisedBevelBorder());
+			grid2Panel = new JPanel();
+			grid2Panel.setBounds(new Rectangle(405, 165, 360, 310));
+			grid2Panel.setBorder(BorderFactory.createRaisedBevelBorder());
+			battlePanel = new JPanel();
+			battlePanel.setLayout(null);
+			battlePanel.setSize(new Dimension(800, 550));
+			battlePanel.add(p1NameLabel, null);
+			battlePanel.add(p1InfoLabel, null);
+			battlePanel.add(p1BigMorveLabel, null);
+			battlePanel.add(p1MidMorveLabel, null);
+			battlePanel.add(p1LittleMorveLabel, null);
+			battlePanel.add(p1NoBigMorves, null);
+			battlePanel.add(p1NoMidMorves, null);
+			battlePanel.add(p1NoLittleMorves, null);
+			battlePanel.add(p2NameLabel, null);
+			battlePanel.add(p2InfoLabel, null);
+			battlePanel.add(p2BigMorveLabel, null);
+			battlePanel.add(p2MidMorveLabel, null);
+			battlePanel.add(p2LittleMorveLabel, null);
+			battlePanel.add(p2NoBigMorves, null);
+			battlePanel.add(p2NoMidMorves, null);
+			battlePanel.add(p2NoLittleMorves, null);
+			battlePanel.add(p1Panel, null);
+			battlePanel.add(p2Panel, null);
+			battlePanel.add(infoPanel, null);
+			battlePanel.add(grid1Panel, null);
+			battlePanel.add(grid2Panel, null);
 		}
-		return infoPanel;
+		return battlePanel;
 	}
-	private JPanel getGridPanel() {
-		if (gridPanel == null) {
-			gridPanel = new JPanel();
-			gridPanel.setLayout(new GridBagLayout());
-			gridPanel.setSize(new Dimension(800, 300));
-		}
-		return gridPanel;
-	}
+
 
 	@Override
 	public void itemStateChanged(ItemEvent arg0) {
