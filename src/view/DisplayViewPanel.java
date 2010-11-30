@@ -22,6 +22,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -83,6 +84,7 @@ ItemListener
 	private JPanel infoPanel;
 	private JPanel grid1Panel;
 	private JPanel grid2Panel;
+	private ResourceBundle rLabels;
     
     /**
      * Creates new form TextElementDisplayPanel
@@ -93,6 +95,8 @@ ItemListener
         
         this.controller = controller;
         
+        rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
+        
         initFrame();
         initComponents();
         localInitialization();
@@ -102,7 +106,7 @@ ItemListener
      * Initialization method called from the constructor to init the frame
      */
     public void initFrame() {
-		frame = new JFrame("Bataille Nasale");
+		frame = new JFrame(rLabels.getString("title"));
 		// Add a window listner for close button
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -130,28 +134,28 @@ ItemListener
      */
     private void initComponents() {
     	menuBar = new JMenuBar();
-    	menuNasalBattle = new JMenu("Bataille Nasale");
+    	menuNasalBattle = new JMenu(rLabels.getString("menu1"));
     	menuBar.add(menuNasalBattle);
-    	menuItemNew = new JMenuItem("Nouvelle Partie");
+    	menuItemNew = new JMenuItem(rLabels.getString("new"));
     	menuItemNew.addActionListener(this);
     	menuNasalBattle.add(menuItemNew);
-    	menuItemQuit = new JMenuItem("Quitter");
+    	menuItemQuit = new JMenuItem(rLabels.getString("exit"));
     	menuItemQuit.addActionListener(this);
     	menuNasalBattle.add(menuItemQuit);
-    	menuLanguages = new JMenu("Langues");
+    	menuLanguages = new JMenu(rLabels.getString("menu2"));
     	menuBar.add(menuLanguages);
-    	menuItemFR = new JMenuItem("Français");
+    	menuItemFR = new JMenuItem(rLabels.getString("fr"));
     	menuItemFR.addActionListener(this);
     	menuLanguages.add(menuItemFR);
-    	menuItemEN = new JMenuItem("Anglais");
+    	menuItemEN = new JMenuItem(rLabels.getString("en"));
     	menuItemEN.addActionListener(this);
     	menuLanguages.add(menuItemEN);
-    	menuHelp = new JMenu("Aide");
+    	menuHelp = new JMenu(rLabels.getString("menu3"));
     	menuBar.add(menuHelp);
-    	menuItemAbout = new JMenuItem("A propos");
+    	menuItemAbout = new JMenuItem(rLabels.getString("about"));
     	menuItemAbout.addActionListener(this);
     	menuHelp.add(menuItemAbout);
-    	menuItemDonate = new JMenuItem("Faire un don");
+    	menuItemDonate = new JMenuItem(rLabels.getString("donate"));
     	menuItemDonate.addActionListener(this);
     	menuHelp.add(menuItemDonate);
     	frame.setJMenuBar(menuBar);
@@ -180,16 +184,16 @@ ItemListener
 			p2NoBigMorves.setText("X");
 			p2LittleMorveLabel = new JLabel();
 			p2LittleMorveLabel.setBounds(new Rectangle(570, 75, 110, 20));
-			p2LittleMorveLabel.setText("Petites morves :");
+			p2LittleMorveLabel.setText(rLabels.getString("text_little"));
 			p2MidMorveLabel = new JLabel();
 			p2MidMorveLabel.setBounds(new Rectangle(570, 55, 120, 20));
-			p2MidMorveLabel.setText("Moyennes morves :");
+			p2MidMorveLabel.setText(rLabels.getString("text_middle"));
 			p2BigMorveLabel = new JLabel();
 			p2BigMorveLabel.setBounds(new Rectangle(570, 35, 120, 20));
-			p2BigMorveLabel.setText("Grosses morves :");
+			p2BigMorveLabel.setText(rLabels.getString("text_big"));
 			p2InfoLabel = new JLabel();
 			p2InfoLabel.setBounds(new Rectangle(570, 10, 150, 20));
-			p2InfoLabel.setText("Morves restantes");
+			p2InfoLabel.setText(rLabels.getString("text_morve"));
 			p2NameLabel = new JLabel();
 			p2NameLabel.setBounds(new Rectangle(420, 30, 120, 40));
 			p2NameLabel.setText("Player 2");
@@ -205,16 +209,16 @@ ItemListener
 			p1NoLittleMorves.setText("Z");
 			p1LittleMorveLabel = new JLabel();
 			p1LittleMorveLabel.setBounds(new Rectangle(170, 75, 110, 20));
-			p1LittleMorveLabel.setText("Petites morves :");
+			p1LittleMorveLabel.setText(rLabels.getString("text_little"));
 			p1MidMorveLabel = new JLabel();
 			p1MidMorveLabel.setBounds(new Rectangle(170, 55, 120, 20));
-			p1MidMorveLabel.setText("Moyennes morves :");
+			p1MidMorveLabel.setText(rLabels.getString("text_middle"));
 			p1BigMorveLabel = new JLabel();
 			p1BigMorveLabel.setBounds(new Rectangle(170, 35, 120, 20));
-			p1BigMorveLabel.setText("Grosses morves :");
+			p1BigMorveLabel.setText(rLabels.getString("text_big"));
 			p1InfoLabel = new JLabel();
 			p1InfoLabel.setBounds(new Rectangle(170, 10, 150, 20));
-			p1InfoLabel.setText("Morves restantes");
+			p1InfoLabel.setText(rLabels.getString("text_morve"));
 			p1NameLabel = new JLabel();
 			p1NameLabel.setBounds(new Rectangle(20, 30, 120, 40));
 			p1NameLabel.setText("Player 1");
@@ -233,7 +237,6 @@ ItemListener
 			infoPanel.setBounds(new Rectangle(5, 110, 760, 50));
 			infoLabel = new JLabel();
 			infoLabel.setBounds(new Rectangle(10, 120, 750, 40));
-			infoLabel.setText("Informations sur la partie ...");
 			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 			infoPanel.add(infoLabel, null);
 			grid1Panel = new JPanel();
@@ -276,10 +279,42 @@ ItemListener
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private void changeLabels(){
+		frame.setTitle(rLabels.getString("title"));
+		menuNasalBattle.setText(rLabels.getString("menu1"));
+    	menuItemNew.setText(rLabels.getString("new"));
+    	menuItemQuit.setText(rLabels.getString("exit"));
+    	menuLanguages.setText(rLabels.getString("menu2"));
+    	menuItemFR.setText(rLabels.getString("fr"));
+    	menuItemEN.setText(rLabels.getString("en"));
+    	menuHelp.setText(rLabels.getString("menu3"));
+    	menuItemAbout.setText(rLabels.getString("about"));
+    	menuItemDonate.setText(rLabels.getString("donate"));
+		p2LittleMorveLabel.setText(rLabels.getString("text_little"));
+		p2MidMorveLabel.setText(rLabels.getString("text_middle"));
+		p2BigMorveLabel.setText(rLabels.getString("text_big"));
+		p2InfoLabel.setText(rLabels.getString("text_morve"));
+		p1LittleMorveLabel.setText(rLabels.getString("text_little"));
+		p1MidMorveLabel.setText(rLabels.getString("text_middle"));
+		p1BigMorveLabel.setText(rLabels.getString("text_big"));
+		p1InfoLabel.setText(rLabels.getString("text_morve"));
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		Object source = e.getSource();
 		
+		if(source == menuItemQuit){
+			System.exit(0);
+		} else if (source == menuItemFR){
+			rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
+			changeLabels();
+			System.out.println("FR");
+		} else if (source == menuItemEN){
+			rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
+			changeLabels();
+			System.out.println("EN");
+		}
 	}    
 }
