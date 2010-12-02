@@ -6,7 +6,8 @@
 
 package view;
 
-import controller.DefaultController;
+import controller.Controller;
+import controller.IController;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,6 +23,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -34,19 +37,10 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 
-/**
- * This is a custom view panel that displays a "document" consisting of a single
- * text element. Both the document and the text element respond to changes in
- * the model state.
- *
- * @author Robert Eckstein
- */
-
-public class DisplayViewPanel extends AbstractViewPanel implements ActionListener,
-ItemListener
+public class SecondaryView implements ActionListener, Observer, IView
 {
     //  The components used by this view
-    private DefaultController controller;
+    private IController controller;
     private JFrame frame;
     private JMenuBar menuBar;
     private JMenu menuNasalBattle;
@@ -88,12 +82,12 @@ ItemListener
     
     /**
      * Creates new form TextElementDisplayPanel
-     * @param controller An object implenting the controller interface that
+     * @param controller2 An object implenting the controller interface that
      *        this view can use to process GUI actions
      */
-    public DisplayViewPanel(DefaultController controller) {
+    public SecondaryView(IController controller2) {
         
-        this.controller = controller;
+        this.controller = controller2;
         
         rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
         
@@ -160,15 +154,6 @@ ItemListener
     	menuHelp.add(menuItemDonate);
     	frame.setJMenuBar(menuBar);
 		frame.add(getBattlePanel(), null);
-    }
-    
-    /**
-     * Called by the controller when it needs to pass along a property change
-     * from a model.
-     * @param evt The property change event
-     */
-    public void modelPropertyChange(PropertyChangeEvent evt) {
-        
     }
     
     private JPanel getBattlePanel() {
@@ -273,13 +258,6 @@ ItemListener
 		return battlePanel;
 	}
 
-
-	@Override
-	public void itemStateChanged(ItemEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	private void changeLabels(){
 		frame.setTitle(rLabels.getString("title"));
 		menuNasalBattle.setText(rLabels.getString("menu1"));
@@ -316,5 +294,10 @@ ItemListener
 			changeLabels();
 			System.out.println("EN");
 		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+				
 	}    
 }
