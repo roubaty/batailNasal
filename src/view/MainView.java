@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -22,12 +23,15 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
 import java.beans.PropertyChangeEvent;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -76,9 +80,12 @@ public class MainView implements ActionListener, Observer, IView
 	private JPanel p2Panel = null;
 	private JLabel infoLabel;
 	private JPanel infoPanel;
-	private JPanel grid1Panel;
-	private JPanel grid2Panel;
+	private GrillePanel grid1Panel;
+	private GrillePanel grid2Panel;
 	private ResourceBundle rLabels;
+	private JButton soundButton;
+	private ImageIcon iconSoundOn;
+	private ImageIcon iconSoundOff;
     
     /**
      * Creates new form TextElementDisplayPanel
@@ -116,7 +123,7 @@ public class MainView implements ActionListener, Observer, IView
      * Initialization method called from the constructor
      */
     public void localInitialization() {
-        
+    	updateGrille(grid1Panel);
     }
     
     // </editor-fold>
@@ -219,15 +226,19 @@ public class MainView implements ActionListener, Observer, IView
 			p2Panel.setBorder(raisedbevel);
 			infoPanel = new JPanel();
 			infoPanel.setBorder(raisedbevel);
-			infoPanel.setBounds(new Rectangle(5, 110, 760, 50));
+			infoPanel.setBounds(new Rectangle(65, 110, 700, 50));
 			infoLabel = new JLabel();
-			infoLabel.setBounds(new Rectangle(10, 120, 750, 40));
+			infoLabel.setBounds(new Rectangle(70, 120, 690, 40));
 			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 			infoPanel.add(infoLabel, null);
-			grid1Panel = new JPanel();
+			iconSoundOn = new ImageIcon(this.getClass().getResource("ressources/soundOn.gif" )); 
+			iconSoundOff = new ImageIcon(this.getClass().getResource("ressources/soundOff.gif" )); 
+			soundButton = new JButton(iconSoundOn);
+			soundButton.setBounds(new Rectangle(5, 110, 50, 50));
+			grid1Panel = new GrillePanel(this);
 			grid1Panel.setBounds(new Rectangle(5, 165, 360, 310));
 			grid1Panel.setBorder(BorderFactory.createRaisedBevelBorder());
-			grid2Panel = new JPanel();
+			grid2Panel = new GrillePanel(this);
 			grid2Panel.setBounds(new Rectangle(405, 165, 360, 310));
 			grid2Panel.setBorder(BorderFactory.createRaisedBevelBorder());
 			battlePanel = new JPanel();
@@ -254,6 +265,7 @@ public class MainView implements ActionListener, Observer, IView
 			battlePanel.add(infoPanel, null);
 			battlePanel.add(grid1Panel, null);
 			battlePanel.add(grid2Panel, null);
+			battlePanel.add(soundButton, null);
 		}
 		return battlePanel;
 	}
@@ -278,7 +290,13 @@ public class MainView implements ActionListener, Observer, IView
 		p1BigMorveLabel.setText(rLabels.getString("text_big"));
 		p1InfoLabel.setText(rLabels.getString("text_morve"));
 	}
-
+	private void updateGrille(JPanel panel){
+		Graphics2D g2d = (Graphics2D) panel.getGraphics();
+		int size_x = panel.getWidth();
+		int size_y = panel.getHeight();
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(0, 0, size_x,  size_y);
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
@@ -298,6 +316,6 @@ public class MainView implements ActionListener, Observer, IView
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-				
+		
 	}    
 }
