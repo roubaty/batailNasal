@@ -10,7 +10,6 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 
 	private int langage;
 	private int sound;
-	private WorkerSound ws;
 	
 	/**
 	 * Constructor of Worker, initialize the game with the default values
@@ -26,7 +25,6 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	private void initGame(){
 		langage = LANGAGEFR;
 		sound = SOUNDON;
-		this.ws = new WorkerSound();
 	}
 	
 	private void updateViews(){
@@ -43,6 +41,13 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	public void newGame() {
 		// TODO Auto-generated method stub
 		updateViews();
+		if(sound == SOUNDON){
+			if(langage == LANGAGEFR){
+				new WorkerSound("../ressources/sounds/fr_start.wav").start();
+			} else {
+				new WorkerSound("../ressources/sounds/fr_start.wav").start();
+			}
+		}
 	}
 
 	@Override

@@ -231,8 +231,8 @@ public class MainView implements ActionListener, Observer, IView
 			infoLabel.setBounds(new Rectangle(70, 120, 690, 40));
 			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 			infoPanel.add(infoLabel, null);
-			iconSoundOn = new ImageIcon(this.getClass().getResource("ressources/soundOn.gif" )); 
-			iconSoundOff = new ImageIcon(this.getClass().getResource("ressources/soundOff.gif" )); 
+			iconSoundOn = new ImageIcon(this.getClass().getResource("../ressources/soundOn.gif" )); 
+			iconSoundOff = new ImageIcon(this.getClass().getResource("../ressources/soundOff.gif" )); 
 			soundButton = new JButton(iconSoundOn);
 			soundButton.setBounds(new Rectangle(5, 110, 50, 50));
 			grid1Panel = new GrillePanel(this);
