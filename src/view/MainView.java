@@ -6,6 +6,8 @@
 
 package view;
 
+import action.*;
+import constants.IConstantsGlobal;
 import controller.Controller;
 import controller.IController;
 
@@ -14,7 +16,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -23,7 +24,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferStrategy;
 import java.beans.PropertyChangeEvent;
 import java.util.Observable;
 import java.util.Observer;
@@ -57,9 +57,6 @@ public class MainView implements ActionListener, Observer, IView
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemDonate;
     private JPanel battlePanel = null;
-	private JPanel jPanel1 = null;
-	private JPanel jPanel2 = null;
-	private JLabel jLabel1 = null;
 	private JLabel p1NameLabel = null;
 	private JLabel p1InfoLabel = null;
 	private JLabel p1BigMorveLabel = null;
@@ -80,8 +77,8 @@ public class MainView implements ActionListener, Observer, IView
 	private JPanel p2Panel = null;
 	private JLabel infoLabel;
 	private JPanel infoPanel;
-	private GrillePanel grid1Panel;
-	private GrillePanel grid2Panel;
+	private JPanel grid1Panel;
+	private JPanel grid2Panel;
 	private ResourceBundle rLabels;
 	private JButton soundButton;
 	private ImageIcon iconSoundOn;
@@ -101,6 +98,7 @@ public class MainView implements ActionListener, Observer, IView
         initFrame();
         initComponents();
         localInitialization();
+        frame.getRootPane().revalidate();
     }
     
     /**
@@ -115,15 +113,15 @@ public class MainView implements ActionListener, Observer, IView
 			}
 		});
 		frame.setPreferredSize(new Dimension(800, 550));
-		frame.pack();
-		frame.setVisible(true);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     /**
      * Initialization method called from the constructor
      */
     public void localInitialization() {
-    	updateGrille(grid1Panel);
+        
     }
     
     // </editor-fold>
@@ -161,6 +159,7 @@ public class MainView implements ActionListener, Observer, IView
     	menuHelp.add(menuItemDonate);
     	frame.setJMenuBar(menuBar);
 		frame.add(getBattlePanel(), null);
+		frame.repaint();
     }
     
     private JPanel getBattlePanel() {
@@ -231,14 +230,14 @@ public class MainView implements ActionListener, Observer, IView
 			infoLabel.setBounds(new Rectangle(70, 120, 690, 40));
 			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 			infoPanel.add(infoLabel, null);
-			iconSoundOn = new ImageIcon(this.getClass().getResource("../ressources/soundOn.gif" )); 
-			iconSoundOff = new ImageIcon(this.getClass().getResource("../ressources/soundOff.gif" )); 
-			soundButton = new JButton(iconSoundOn);
+			soundButton = new JButton();
+			soundButton.setIcon(new ImageIcon(getClass().getResource("../ressources/soundOn.gif" )));
 			soundButton.setBounds(new Rectangle(5, 110, 50, 50));
-			grid1Panel = new GrillePanel(this);
+			soundButton.addActionListener(this);
+			grid1Panel = new JPanel();
 			grid1Panel.setBounds(new Rectangle(5, 165, 360, 310));
 			grid1Panel.setBorder(BorderFactory.createRaisedBevelBorder());
-			grid2Panel = new GrillePanel(this);
+			grid2Panel = new JPanel();
 			grid2Panel.setBounds(new Rectangle(405, 165, 360, 310));
 			grid2Panel.setBorder(BorderFactory.createRaisedBevelBorder());
 			battlePanel = new JPanel();
@@ -290,13 +289,7 @@ public class MainView implements ActionListener, Observer, IView
 		p1BigMorveLabel.setText(rLabels.getString("text_big"));
 		p1InfoLabel.setText(rLabels.getString("text_morve"));
 	}
-	private void updateGrille(JPanel panel){
-		Graphics2D g2d = (Graphics2D) panel.getGraphics();
-		int size_x = panel.getWidth();
-		int size_y = panel.getHeight();
-		g2d.setColor(Color.WHITE);
-		g2d.fillRect(0, 0, size_x,  size_y);
-	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
@@ -304,18 +297,19 @@ public class MainView implements ActionListener, Observer, IView
 		if(source == menuItemQuit){
 			System.exit(0);
 		} else if (source == menuItemFR){
-			rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
-			changeLabels();
-			System.out.println("FR");
+			ActionLangage actionLangage = new ActionLangage(IConstantsGlobal.LANGAGEFR);
+			controller.actionOccured(actionLangage);
 		} else if (source == menuItemEN){
-			rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
-			changeLabels();
-			System.out.println("EN");
+			ActionLangage actionLangage = new ActionLangage(IConstantsGlobal.LANGAGEEN);
+			controller.actionOccured(actionLangage);
+		} else if(source == soundButton){
+			ActionSound actionSound = new ActionSound();
+			controller.actionOccured(actionSound);
 		}
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		
+				
 	}    
 }
