@@ -1,7 +1,9 @@
 package controller;
 
-public interface IController {
+import action.Action;
 
-	public void changeLangage(String langage);
+public interface IController {
+	
+	public void actionOccured(Action action);
 	
 }
