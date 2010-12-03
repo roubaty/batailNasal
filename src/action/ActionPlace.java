@@ -14,11 +14,11 @@ public class ActionPlace extends Action {
 		this.endY = endY;
 	}
 
-	public int getX() {
+	public int getStartX() {
 		return startX;
 	}
 
-	public int getY() {
+	public int getStartY() {
 		return startY;
 	}
 	

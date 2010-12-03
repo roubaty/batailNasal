@@ -46,16 +46,24 @@ public class Controller implements IController {
 	@Override
 	public void actionOccured(Action action) {
 		if (action instanceof ActionLangage) {
-
+			worker.changeLangage(((ActionLangage) action).getLangage());
 		}
 		if (action instanceof ActionNewGame) {
-
+			worker.newGame();
 		}
 		if (action instanceof ActionPlace) {
-
+			worker.place(((ActionPlace) action).getStartX(),
+					((ActionPlace) action).getStartY(),
+					((ActionPlace) action).getEndX(),
+					((ActionPlace) action).getEndY());
 		}
 		if (action instanceof ActionShot) {
-
+			worker.shot(((ActionShot) action).getType(),
+					((ActionShot) action).getPosX(),
+					((ActionShot) action).getPosY());
+		}
+		if (action instanceof ActionSound) {
+			worker.changesound();
 		}
 	}
 
