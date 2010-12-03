@@ -30,6 +30,8 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -81,6 +83,9 @@ public class MainView implements ActionListener, Observer, IView
 	private GrillePanel grid1Panel;
 	private GrillePanel grid2Panel;
 	private ResourceBundle rLabels;
+	private JButton soundButton;
+	private ImageIcon iconSoundOn;
+	private ImageIcon iconSoundOff;
     
     /**
      * Creates new form TextElementDisplayPanel
@@ -221,11 +226,15 @@ public class MainView implements ActionListener, Observer, IView
 			p2Panel.setBorder(raisedbevel);
 			infoPanel = new JPanel();
 			infoPanel.setBorder(raisedbevel);
-			infoPanel.setBounds(new Rectangle(5, 110, 760, 50));
+			infoPanel.setBounds(new Rectangle(65, 110, 700, 50));
 			infoLabel = new JLabel();
-			infoLabel.setBounds(new Rectangle(10, 120, 750, 40));
+			infoLabel.setBounds(new Rectangle(70, 120, 690, 40));
 			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 			infoPanel.add(infoLabel, null);
+			iconSoundOn = new ImageIcon(this.getClass().getResource("ressources/soundOn.gif" )); 
+			iconSoundOff = new ImageIcon(this.getClass().getResource("ressources/soundOff.gif" )); 
+			soundButton = new JButton(iconSoundOn);
+			soundButton.setBounds(new Rectangle(5, 110, 50, 50));
 			grid1Panel = new GrillePanel(this);
 			grid1Panel.setBounds(new Rectangle(5, 165, 360, 310));
 			grid1Panel.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -256,6 +265,7 @@ public class MainView implements ActionListener, Observer, IView
 			battlePanel.add(infoPanel, null);
 			battlePanel.add(grid1Panel, null);
 			battlePanel.add(grid2Panel, null);
+			battlePanel.add(soundButton, null);
 		}
 		return battlePanel;
 	}
