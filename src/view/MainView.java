@@ -83,6 +83,7 @@ public class MainView implements ActionListener, Observer, IView
 	private ResourceBundle rLabels;
 	private JButton soundButton;
 	private ImageIcon iconSoundOn;
+	private ImageIcon iconSoundOff;
     
     /**
      * Creates new form TextElementDisplayPanel
@@ -228,8 +229,9 @@ public class MainView implements ActionListener, Observer, IView
 			infoLabel.setBounds(new Rectangle(70, 120, 690, 40));
 			infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
 			infoPanel.add(infoLabel, null);
-			iconSoundOn = new ImageIcon(this.getClass().getResource("myIcon.gif" )); 
-			soundButton = new JButton();
+			iconSoundOn = new ImageIcon(this.getClass().getResource("ressources/soundOn.gif" )); 
+			iconSoundOff = new ImageIcon(this.getClass().getResource("ressources/soundOff.gif" )); 
+			soundButton = new JButton(iconSoundOn);
 			soundButton.setBounds(new Rectangle(5, 110, 50, 50));
 			grid1Panel = new JPanel();
 			grid1Panel.setBounds(new Rectangle(5, 165, 360, 310));
