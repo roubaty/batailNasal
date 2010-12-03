@@ -9,6 +9,7 @@
 
 package controller;
 
+import action.Action;
 import model.IWorker;
 import model.Worker;
 
@@ -42,7 +43,7 @@ public class Controller implements IController {
     }
 
 	@Override
-	public void changeLangage(String langage) {
+	public void actionOccured(Action action) {
 		// TODO Auto-generated method stub
 		
 	}
