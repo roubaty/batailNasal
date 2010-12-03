@@ -6,8 +6,15 @@ import controller.IController;
 
 public class Worker extends Observable implements IWorker {
 
+	private int langage;
+	private int sound;
+	
 	public Worker(IController controller) {
-		// TODO Auto-generated constructor stub
+		initGame();
 	}
 
+	private void initGame(){
+		
+	}
+	
 }
