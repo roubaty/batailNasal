@@ -34,26 +34,26 @@ public class GrillePanel extends JPanel implements IConstantView,
 	private static final long serialVersionUID = 1L;
 	private int nb_case_x = NUMBER_CASE_X;
 	private int nb_case_y = NUMBER_CASE_Y;
-	private ArrayList<MorveBean> my_table_movre;
+	private ArrayList<MorveBean> my_table_movre = new ArrayList<MorveBean>();
 	private boolean[][] my_table_visibility;
 	private boolean[][] my_table_shot;
 	private int grid_size_x;
 	private int grid_size_y;
 	private int case_size_x;
 	private int case_size_y;
+	private int no_grid;
 	private int state;
 	private KeyListenerAddMorveAndSpray keyListener;
-
-	public GrillePanel(int nb_cases_x, int nb_cases_y,
-			KeyListenerAddMorveAndSpray keyListener) {
-		nb_case_x = nb_cases_x;
-		nb_case_y = nb_cases_y;
-	}
 
 	public GrillePanel(MainView view, int no_grid,
 			KeyListenerAddMorveAndSpray keyListener) {
 		this.addMouseListener(new MyMouseListener(view));
 		this.keyListener = keyListener;
+		nb_case_x=NUMBER_CASE_X;
+		nb_case_y=NUMBER_CASE_Y;
+		this.no_grid=no_grid;
+		my_table_visibility= new boolean[nb_case_x][nb_case_y];
+		my_table_shot= new boolean[nb_case_x][nb_case_y];;
 	}
 
 	private GridThreadScanAndAddMorve modificationState = new GridThreadScanAndAddMorve(this);
@@ -65,23 +65,31 @@ public class GrillePanel extends JPanel implements IConstantView,
 		Graphics2D g2d = (Graphics2D) g;
 		drawMorve(g2d);
 		drawShot(g2d);
-		drawVisibility(g2d);
+		if(no_grid==1){
+			drawVisibility(g2d);
+		}
 		drawGrid(g2d);
 		if (state == TYPESCAN) {
-			if (!modificationState.isAlive()) {
-				modificationState.start();
+			if(no_grid==1){
+				if (!modificationState.isAlive()) {
+					modificationState.start();
+				}
+				drawScan(g2d);
 			}
-			drawScan(g2d);
 		} else if (state == TYPESPRAY) {
-			if (!modificationState.isAlive()) {
-				modificationState.start();
+			if(no_grid==1){
+				if (!modificationState.isAlive()) {
+					modificationState.start();
+				}
+				drawSpray(g2d);
 			}
-			drawSpray(g2d);
 		} else if (state == TYPEADDMORVE) {
-			if (!modificationState.isAlive()) {
-				modificationState.start();
+			if(no_grid==0){
+				if (!modificationState.isAlive()) {
+					modificationState.start();
+				}
+				drawAddMorve(g2d, 3);
 			}
-			drawAddMorve(g2d, 3);
 		}
 	}
 
