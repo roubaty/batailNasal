@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.util.Observable;
 
 import constants.IConstantWorker;
@@ -17,6 +18,7 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	 */
 	public Worker(IController controller) {
 		initGame();
+		newGame();
 	}
 
 	/**
@@ -43,9 +45,9 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 		updateViews();
 		if(sound == SOUNDON){
 			if(langage == LANGAGEFR){
-				new WorkerSound("../ressources/sounds/fr_start.wav").start();
+				new WorkerSound("src/ressources/sounds/fr_start.wav").start();
 			} else {
-				new WorkerSound("../ressources/sounds/fr_start.wav").start();
+				new WorkerSound("src/ressources/sounds/en_start.wav").start();
 			}
 		}
 	}
