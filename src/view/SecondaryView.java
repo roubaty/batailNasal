@@ -28,7 +28,6 @@ public class SecondaryView implements ActionListener, Observer, IView
 	private ResourceBundle rLabels;
 	private JPanel logPanel = null;
 	private TextArea logArea;
-	private JPanel imgPanel = null;
 	private JScrollPane scroll;
 	private JLabel imgLabel;
 	private JPanel secondaryPanel = null;

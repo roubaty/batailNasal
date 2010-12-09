@@ -157,6 +157,7 @@ public class MainView implements ActionListener, Observer, IView
     	menuItemDonate = new JMenuItem(rLabels.getString("donate"));
     	menuItemDonate.addActionListener(this);
     	menuHelp.add(menuItemDonate);
+    	menuHelp.addActionListener(this);
     	frame.setJMenuBar(menuBar);
 		frame.add(getBattlePanel(), null);
 		frame.repaint();
@@ -305,6 +306,8 @@ public class MainView implements ActionListener, Observer, IView
 		} else if(source == soundButton){
 			ActionSound actionSound = new ActionSound();
 			controller.actionOccured(actionSound);
+		} else if(source == menuHelp){
+			GenericView helpView = new GenericView();
 		}
 	}
 
