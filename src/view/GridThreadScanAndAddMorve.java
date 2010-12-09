@@ -1,9 +1,9 @@
 package view;
 
 public class GridThreadScanAndAddMorve extends Thread {
-	GrillePanel grid;
+	GridPanel grid;
 
-	public GridThreadScanAndAddMorve(GrillePanel grid) {
+	public GridThreadScanAndAddMorve(GridPanel grid) {
 		this.grid = grid;
 	}
 

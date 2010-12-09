@@ -26,7 +26,7 @@ import constants.IConstantsGlobal;
 
 import model.MorveBean;
 
-public class GrillePanel extends JPanel implements IConstantView,
+public class GridPanel extends JPanel implements IConstantView,
 		IConstantsGlobal {
 	/**
 	 * 
@@ -42,10 +42,10 @@ public class GrillePanel extends JPanel implements IConstantView,
 	private int case_size_x;
 	private int case_size_y;
 	private int no_grid;
-	private int state;
+	private int state = TYPEADDMORVE;
 	private KeyListenerAddMorveAndSpray keyListener;
 
-	public GrillePanel(MainView view, int no_grid,
+	public GridPanel(MainView view, int no_grid,
 			KeyListenerAddMorveAndSpray keyListener) {
 		this.addMouseListener(new MyMouseListener(view));
 		this.keyListener = keyListener;
@@ -91,6 +91,23 @@ public class GrillePanel extends JPanel implements IConstantView,
 				drawAddMorve(g2d, 3);
 			}
 		}
+		drawBorder(g2d);
+	}
+
+	private void drawBorder(Graphics2D g2d) {
+		saveG2dState(g2d);
+		Rectangle2D.Float recBorderUp = new Rectangle2D.Float(0, 0, getWidth(), BORDER);
+		int borderDown = BORDER + (nb_case_y*case_size_y);
+		Rectangle2D.Float recBorderDown = new Rectangle2D.Float(0, borderDown+1, getWidth(), BORDER);
+		Rectangle2D.Float recBorderleft = new Rectangle2D.Float(0, 0, BORDER, getHeight());
+		int borderRight = BORDER + (nb_case_x*case_size_x);
+		Rectangle2D.Float recBorderRight = new Rectangle2D.Float(borderRight+1, 0, BORDER, getHeight());
+		g2d.setColor(BACKGROUND_COLOR);
+		g2d.fill(recBorderUp);
+		g2d.fill(recBorderDown);
+		g2d.fill(recBorderleft);
+		g2d.fill(recBorderRight);
+		retriveG2dState(g2d);
 	}
 
 	private void initSize() {
