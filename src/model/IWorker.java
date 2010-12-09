@@ -1,5 +1,9 @@
 package model;
 
+import java.util.Observer;
+
+import view.IView;
+
 public interface IWorker {
 
 	void changeLangage(int langage);
@@ -11,5 +15,7 @@ public interface IWorker {
 	void shot(int type, int posX, int posY);
 
 	void changesound();
+
+	void addObserver(Observer mainView);
 	
 }
