@@ -26,7 +26,7 @@ import constants.IConstantsGlobal;
 
 import model.MorveBean;
 
-public class GrillePanel extends JPanel implements IConstantView,
+public class GridPanel extends JPanel implements IConstantView,
 		IConstantsGlobal {
 	/**
 	 * 
@@ -45,7 +45,7 @@ public class GrillePanel extends JPanel implements IConstantView,
 	private int state;
 	private KeyListenerAddMorveAndSpray keyListener;
 
-	public GrillePanel(MainView view, int no_grid,
+	public GridPanel(MainView view, int no_grid,
 			KeyListenerAddMorveAndSpray keyListener) {
 		this.addMouseListener(new MyMouseListener(view));
 		this.keyListener = keyListener;

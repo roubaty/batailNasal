@@ -77,8 +77,8 @@ public class MainView implements ActionListener, Observer, IView
 	private JPanel p2Panel = null;
 	private JLabel infoLabel;
 	private JPanel infoPanel;
-	private GrillePanel grid1Panel;
-	private GrillePanel grid2Panel;
+	private GridPanel grid1Panel;
+	private GridPanel grid2Panel;
 	private ResourceBundle rLabels;
 	private JButton soundButton;
 	private ImageIcon iconSoundOn;
@@ -236,10 +236,10 @@ public class MainView implements ActionListener, Observer, IView
 			soundButton.setBounds(new Rectangle(5, 110, 50, 50));
 			soundButton.addActionListener(this);
 			KeyListenerAddMorveAndSpray listener = new KeyListenerAddMorveAndSpray();
-			grid1Panel = new GrillePanel(this, 0, listener);
+			grid1Panel = new GridPanel(this, 0, listener);
 			grid1Panel.setBounds(new Rectangle(5, 165, 360, 310));
 			grid1Panel.setBorder(BorderFactory.createRaisedBevelBorder());
-			grid2Panel = new GrillePanel(this, 1, listener);
+			grid2Panel = new GridPanel(this, 1, listener);
 			grid2Panel.setBounds(new Rectangle(405, 165, 360, 310));
 			grid2Panel.setBorder(BorderFactory.createRaisedBevelBorder());
 			battlePanel = new JPanel();
