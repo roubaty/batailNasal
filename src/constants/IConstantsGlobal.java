@@ -1,6 +1,8 @@
 package constants;
 
 public interface IConstantsGlobal {
+	public static final int NUMBER_CASE_X = 10;
+	public static final int NUMBER_CASE_Y = 10;
 	public static final int TYPENORMAL = 0;
 	public static final int TYPETRIPLE = 1;
 	public static final int TYPESCAN = 2;
