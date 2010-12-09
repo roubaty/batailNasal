@@ -42,7 +42,7 @@ public class GridPanel extends JPanel implements IConstantView,
 	private int case_size_x;
 	private int case_size_y;
 	private int no_grid;
-	private int state = TYPESPRAY;
+	private int state = TYPEADDMORVE;
 	private KeyListenerAddMorveAndSpray keyListener;
 
 	public GridPanel(MainView view, int no_grid,

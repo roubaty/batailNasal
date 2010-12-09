@@ -236,6 +236,7 @@ public class MainView implements ActionListener, Observer, IView
 			soundButton.setBounds(new Rectangle(5, 110, 50, 50));
 			soundButton.addActionListener(this);
 			KeyListenerAddMorveAndSpray listener = new KeyListenerAddMorveAndSpray();
+			frame.addKeyListener(listener);
 			grid1Panel = new GridPanel(this, 0, listener);
 			grid1Panel.setBounds(new Rectangle(5, 165, 360, 310));
 			grid1Panel.setBorder(BorderFactory.createRaisedBevelBorder());

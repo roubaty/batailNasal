@@ -7,15 +7,15 @@ public interface IConstantView {
 	public static final int NUMBER_CASE_Y = 10;
 	public static final int BORDER = 10;
 	
-	public static final String BIG_MORVE_URL = "src/ressources/morves/grande_morve.gif";
+	public static final String BIG_MORVE_URL = "src/ressources/pictures/grande_morve.gif";
 	public static final int BIG_MORVE_SIZE_X = 425;
 	public static final int BIG_MORVE_SIZE_Y = 85;
 	
-	public static final String MEDIUM_MORVE_URL = "src/ressources/morves/moyenne_morve.gif";
+	public static final String MEDIUM_MORVE_URL = "src/ressources/pictures/moyenne_morve.gif";
 	public static final int MEDIUM_MORVE_SIZE_X = 340;
 	public static final int MEDIUM_MORVE_SIZE_Y = 85;
 	
-	public static final String SMALL_MORVE_URL = "src/ressources/morves/petite_morve.gif";
+	public static final String SMALL_MORVE_URL = "src/ressources/pictures/petite_morve.gif";
 	public static final int SMALL_MORVE_SIZE_X = 255;
 	public static final int SMALL_MORVE_SIZE_Y = 85;
 	

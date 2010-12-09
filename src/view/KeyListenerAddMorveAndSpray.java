@@ -7,22 +7,21 @@ public class KeyListenerAddMorveAndSpray implements KeyListener{
 	private boolean crltPress = false;
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==17){
-			crltPress=true;
-		}
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode()==17){
-			crltPress=false;
-		}
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+			crltPress=!crltPress;
+			
+		}
+		System.out.println("press");
 	}
 
 	public boolean isCrltPress() {
