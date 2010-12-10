@@ -1,6 +1,5 @@
 package model;
 
-import java.io.File;
 import java.util.Observable;
 
 import constants.IConstantWorker;
@@ -8,9 +7,8 @@ import constants.IConstantsGlobal;
 import controller.IController;
 
 public class Worker extends Observable implements IWorker,IConstantsGlobal,IConstantWorker {
-
-	private int langage;
-	private int sound;
+	
+	GameBean gb;
 	
 	/**
 	 * Constructor of Worker, initialize the game with the default values
@@ -25,17 +23,18 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	 * initialise default values and build the WorkerSound
 	 */
 	private void initGame(){
-		langage = LANGAGEFR;
-		sound = SOUNDON;
+		gb = new GameBean();
+		gb.setLangage(LANGAGEFR);
+		gb.setSound(SOUNDON);
 	}
 	
 	private void updateViews(){
-		
+		this.notifyObservers(/*arg bean*/);
 	}
 
 	@Override
 	public void changeLangage(int langage) {
-		this.langage = langage;
+		gb.setLangage(langage);
 		updateViews();
 	}
 
@@ -43,8 +42,8 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	public void newGame() {
 		// TODO Auto-generated method stub
 		updateViews();
-		if(sound == SOUNDON){
-			if(langage == LANGAGEFR){
+		if(gb.getSound() == SOUNDON){
+			if(gb.getLangage() == LANGAGEFR){
 				new WorkerSound("src/ressources/sounds/fr_start.wav").start();
 			} else {
 				new WorkerSound("src/ressources/sounds/en_start.wav").start();
@@ -66,8 +65,8 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 
 	@Override
 	public void changesound() {
-		if(sound == SOUNDON)sound = SOUNDOOFF;
-		else sound = SOUNDON;
+		if(gb.getSound() == SOUNDON)gb.setSound(SOUNDOOFF);
+		else gb.setSound(SOUNDON);
 		updateViews();
 	}
 	

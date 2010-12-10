@@ -16,6 +16,6 @@ public interface IWorker {
 
 	void changesound();
 
-	void addObserver(Observer mainView);
+	void addObserver(Observer IView);
 	
 }

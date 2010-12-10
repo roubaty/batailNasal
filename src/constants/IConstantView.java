@@ -3,8 +3,6 @@ package constants;
 import java.awt.Color;
 
 public interface IConstantView {
-	public static final int NUMBER_CASE_X = 10;
-	public static final int NUMBER_CASE_Y = 10;
 	public static final int BORDER = 10;
 	
 	public static final String BIG_MORVE_URL = "src/ressources/pictures/grande_morve.gif";
