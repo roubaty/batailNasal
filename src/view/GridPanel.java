@@ -28,9 +28,6 @@ import model.MorveBean;
 
 public class GridPanel extends JPanel implements IConstantView,
 		IConstantsGlobal {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private int nb_case_x = NUMBER_CASE_X;
 	private int nb_case_y = NUMBER_CASE_Y;
@@ -39,16 +36,22 @@ public class GridPanel extends JPanel implements IConstantView,
 	private boolean[][] my_table_shot;
 	private int grid_size_x;
 	private int grid_size_y;
-	private int case_size_x;
-	private int case_size_y;
+	private static int case_size_x;
+	private static int case_size_y;
 	private int no_grid;
 	private int state = 0;
-	public int getState() {
-		return state;
-	}
-
 	private KeyListenerAddMorveAndSpray keyListener;
-
+	private GridThreadScanAndAddMorve modificationState = new GridThreadScanAndAddMorve(this);
+	private MorveBean morve;
+	private boolean morveAddValid=true;
+	private Random rnd = new Random();
+	private Stroke g2dStroke;
+	private Color g2dColor;
+	private Composite g2dComposite;
+	
+	/*
+	 * Initialization section
+	 */
 	public GridPanel(MainView view, int no_grid,
 			KeyListenerAddMorveAndSpray keyListener) {
 		this.addMouseListener(new MyMouseListener(view));
@@ -59,9 +62,18 @@ public class GridPanel extends JPanel implements IConstantView,
 		my_table_visibility= new boolean[nb_case_x][nb_case_y];
 		my_table_shot= new boolean[nb_case_x][nb_case_y];;
 	}
-
-	private GridThreadScanAndAddMorve modificationState = new GridThreadScanAndAddMorve(this);
-
+	
+	private void initSize() {
+		grid_size_x = (getWidth() - (BORDER * 2));
+		grid_size_y = (getHeight() - (BORDER * 2));
+		case_size_x = grid_size_x / nb_case_x;
+		case_size_y = grid_size_y / nb_case_y;
+	}
+	
+	/*
+	 * draw section
+	 */
+	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		initSize();
@@ -80,6 +92,7 @@ public class GridPanel extends JPanel implements IConstantView,
 				}
 				drawScan(g2d);
 			}
+			drawBorder(g2d);
 		} else if (state == TYPESPRAY) {
 			if(no_grid==1){
 				if (!modificationState.isAlive()) {
@@ -87,6 +100,7 @@ public class GridPanel extends JPanel implements IConstantView,
 				}
 				drawSpray(g2d);
 			}
+			drawBorder(g2d);
 		} else if (state == TYPEADDMORVE) {
 			if(no_grid==0){
 				if (!modificationState.isAlive()) {
@@ -94,50 +108,42 @@ public class GridPanel extends JPanel implements IConstantView,
 				}
 				drawAddMorve(g2d, 3);
 			}
+			drawBorder(g2d);
+		}else if(state == TYPENORMAL || state==TYPETRIPLE){
+			
 		}
-		drawBorder(g2d);
 	}
-
-	private void drawBorder(Graphics2D g2d) {
+	
+	private void drawMorve(Graphics2D g2d) {
 		saveG2dState(g2d);
-		Rectangle2D.Float recBorderUp = new Rectangle2D.Float(0, 0, getWidth(), BORDER);
-		int borderDown = BORDER + (nb_case_y*case_size_y);
-		Rectangle2D.Float recBorderDown = new Rectangle2D.Float(0, borderDown+1, getWidth(), BORDER);
-		Rectangle2D.Float recBorderleft = new Rectangle2D.Float(0, 0, BORDER, getHeight());
-		int borderRight = BORDER + (nb_case_x*case_size_x);
-		Rectangle2D.Float recBorderRight = new Rectangle2D.Float(borderRight+1, 0, BORDER, getHeight());
-		g2d.setColor(BACKGROUND_COLOR);
-		g2d.fill(recBorderUp);
-		g2d.fill(recBorderDown);
-		g2d.fill(recBorderleft);
-		g2d.fill(recBorderRight);
-		retriveG2dState(g2d);
-	}
-
-	private void initSize() {
-		grid_size_x = (getWidth() - (BORDER * 2));
-		grid_size_y = (getHeight() - (BORDER * 2));
-		case_size_x = grid_size_x / nb_case_x;
-		case_size_y = grid_size_y / nb_case_y;
-	}
-
-	private void drawVisibility(Graphics2D g2d) {
-		saveG2dState(g2d);
-		g2d.setColor(CASE_NONVISIBLE_COLOR);
-		for (int i = 0; i < my_table_visibility.length; i++) {
-			for (int j = 0; j < my_table_visibility[i].length; j++) {
-				if (!my_table_visibility[i][j]) {
-					Point down_left_corner = getCoordinateCase(i, j);
-					int down_left_corner_x = down_left_corner.x;
-					int down_left_corner_y = down_left_corner.y;
-					g2d.fillRect(down_left_corner_x, down_left_corner_y,
-							case_size_x, case_size_y);
-				}
+		for (MorveBean i : my_table_movre) {
+			Image img;
+			int image_origine_size_x;
+			int image_origine_size_y;
+			if (i.getSize() == 4) {
+				img = Toolkit.getDefaultToolkit().getImage(BIG_MORVE_URL);
+				image_origine_size_x = BIG_MORVE_SIZE_X;
+				image_origine_size_y = BIG_MORVE_SIZE_Y;
+			} else if (i.getSize() == 3) {
+				img = Toolkit.getDefaultToolkit().getImage(MEDIUM_MORVE_URL);
+				image_origine_size_x = MEDIUM_MORVE_SIZE_X;
+				image_origine_size_y = MEDIUM_MORVE_SIZE_Y;
+			} else {
+				img = Toolkit.getDefaultToolkit().getImage(SMALL_MORVE_URL);
+				image_origine_size_x = SMALL_MORVE_SIZE_X;
+				image_origine_size_y = SMALL_MORVE_SIZE_Y;
+			}
+			if (i.getDirection() == 0) {
+				drawAMorveHorivontally(g2d, i, img, image_origine_size_x,
+						image_origine_size_y);
+			} else {
+				drawAMorveVertically(g2d, i, img, image_origine_size_x,
+						image_origine_size_y);
 			}
 		}
 		retriveG2dState(g2d);
 	}
-
+	
 	private void drawShot(Graphics2D g2d) {
 		saveG2dState(g2d);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -167,7 +173,24 @@ public class GridPanel extends JPanel implements IConstantView,
 		}
 		retriveG2dState(g2d);
 	}
-
+	
+	private void drawVisibility(Graphics2D g2d) {
+		saveG2dState(g2d);
+		g2d.setColor(CASE_NONVISIBLE_COLOR);
+		for (int i = 0; i < my_table_visibility.length; i++) {
+			for (int j = 0; j < my_table_visibility[i].length; j++) {
+				if (!my_table_visibility[i][j]) {
+					Point down_left_corner = getCoordinateCase(i, j);
+					int down_left_corner_x = down_left_corner.x;
+					int down_left_corner_y = down_left_corner.y;
+					g2d.fillRect(down_left_corner_x, down_left_corner_y,
+							case_size_x, case_size_y);
+				}
+			}
+		}
+		retriveG2dState(g2d);
+	}
+	
 	private void drawScan(Graphics2D g2d) {
 		saveG2dState(g2d);
 		PointerInfo pi = MouseInfo.getPointerInfo();
@@ -198,16 +221,46 @@ public class GridPanel extends JPanel implements IConstantView,
 		}
 		retriveG2dState(g2d);
 	}
-	private MorveBean morve;
-	private boolean morveAddValid=true;
-	public boolean isMorveAddValid() {
-		return morveAddValid;
-	}
 
-	public MorveBean getMorve() {
-		return morve;
-	}
+	private void drawSpray(Graphics2D g2d) {
+		saveG2dState(g2d);
+		PointerInfo pi = MouseInfo.getPointerInfo();
+		Point p = pi.getLocation();
+		this.getLocationOnScreen();
+		SwingUtilities.convertPointFromScreen(p, this);
+		int[] cas = getCaseFromPosition(p);
+		if (cas[0] != -1) {
+			p = getCoordinateCase(cas[0], cas[1]);
 
+			int x = p.x - (((SCAN_SIZE_X - 1) / 2)) * case_size_x;
+			int y = p.y;
+			int w = case_size_x * SCAN_SIZE_X;
+			int h = case_size_y;
+			int x2 = p.x;
+			int y2 = p.y - (((SCAN_SIZE_Y - 1) / 2)) * case_size_y;
+			int w2 = case_size_x;
+			int h2 = case_size_y * SCAN_SIZE_X;
+			
+			g2d.setStroke(new BasicStroke(SCAN_STROKE));
+			g2d.setColor(SCAN_COLOR);
+			g2d.setComposite(java.awt.AlphaComposite.getInstance(
+					java.awt.AlphaComposite.SRC_OVER,
+					Math.min(SCAN_TRANSPARENCE, 1.0f)));
+			g2d.setStroke(new BasicStroke(1));
+			for (int i = 0; i < 2000; i++) {
+				int pos_x = rnd.nextInt(w) + x;
+				int pos_y = rnd.nextInt(h) + y;
+				g2d.drawLine(pos_x, pos_y, pos_x, pos_y);
+			}
+			for (int i = 0; i < 2000; i++) {
+				int pos_x = rnd.nextInt(w2) + x2;
+				int pos_y = rnd.nextInt(h2) + y2;
+				g2d.drawLine(pos_x, pos_y, pos_x, pos_y);
+			}
+		}
+		retriveG2dState(g2d);
+	}
+	
 	private void drawAddMorve(Graphics2D g2d, int morve_size) {
 		saveG2dState(g2d);
 		boolean ctrl = keyListener.isCrltPress();
@@ -318,104 +371,61 @@ public class GridPanel extends JPanel implements IConstantView,
 		}
 		retriveG2dState(g2d);
 	}
-
-	private Random rnd = new Random();
-
-	private void drawSpray(Graphics2D g2d) {
-		saveG2dState(g2d);
-		PointerInfo pi = MouseInfo.getPointerInfo();
-		Point p = pi.getLocation();
-		this.getLocationOnScreen();
-		SwingUtilities.convertPointFromScreen(p, this);
-		int[] cas = getCaseFromPosition(p);
-		if (cas[0] != -1) {
-			p = getCoordinateCase(cas[0], cas[1]);
-
-			int x = p.x - (((SCAN_SIZE_X - 1) / 2)) * case_size_x;
-			int y = p.y;
-			int w = case_size_x * SCAN_SIZE_X;
-			int h = case_size_y;
-			int x2 = p.x;
-			int y2 = p.y - (((SCAN_SIZE_Y - 1) / 2)) * case_size_y;
-			int w2 = case_size_x;
-			int h2 = case_size_y * SCAN_SIZE_X;
-			
-			g2d.setStroke(new BasicStroke(SCAN_STROKE));
-			g2d.setColor(SCAN_COLOR);
-			g2d.setComposite(java.awt.AlphaComposite.getInstance(
-					java.awt.AlphaComposite.SRC_OVER,
-					Math.min(SCAN_TRANSPARENCE, 1.0f)));
-			g2d.setStroke(new BasicStroke(1));
-			for (int i = 0; i < 2000; i++) {
-				int pos_x = rnd.nextInt(w) + x;
-				int pos_y = rnd.nextInt(h) + y;
-				g2d.drawLine(pos_x, pos_y, pos_x, pos_y);
-			}
-			for (int i = 0; i < 2000; i++) {
-				int pos_x = rnd.nextInt(w2) + x2;
-				int pos_y = rnd.nextInt(h2) + y2;
-				g2d.drawLine(pos_x, pos_y, pos_x, pos_y);
-			}
+	private static boolean isValideAdd(MorveBean morve, ArrayList<MorveBean> list){
+		boolean cross_over = false;
+		
+		Point line2_p1 = getCoordinateCase(morve.getStart_case_x(), morve.getStart_case_y());
+		Point line2_p2 = getCoordinateCase(morve.getEnd_case_x(), morve.getEnd_case_y());
+		
+		if (morve.getDirection()==0) {
+			line2_p1.y += case_size_y/2;
+			line2_p2.y += case_size_y/2;
+			line2_p1.x += case_size_x/3;
+			line2_p2.x -= case_size_x/3;
+		} else {
+			line2_p1.x += case_size_x/2;
+			line2_p2.x += case_size_x/2;
+			line2_p1.y += case_size_y/3;
+			line2_p2.y -= case_size_y/3;
 		}
-		retriveG2dState(g2d);
-	}
-
-	private Stroke g2dStroke;
-	private Color g2dColor;
-	private Composite g2dComposite;
-
-	private void saveG2dState(Graphics2D g2d) {
-		g2dStroke = g2d.getStroke();
-		g2dColor = g2d.getColor();
-		g2dComposite = g2d.getComposite();
-	}
-
-	private void retriveG2dState(Graphics2D g2d) {
-		g2d.setStroke(g2dStroke);
-		g2d.setColor(g2dColor);
-		g2d.setComposite(g2dComposite);
-	}
-
-	private Point getCoordinateCase(int i, int j) {
-		int x = case_size_x * i + BORDER;
-		int y = case_size_y * j + BORDER;
-
-		Point down_left_corner = new Point();
-		down_left_corner.x = x;
-		down_left_corner.y = y;
-		return down_left_corner;
-	}
-
-	private void drawMorve(Graphics2D g2d) {
-		saveG2dState(g2d);
-		for (MorveBean i : my_table_movre) {
-			Image img;
-			int image_origine_size_x;
-			int image_origine_size_y;
-			if (i.getSize() == 4) {
-				img = Toolkit.getDefaultToolkit().getImage(BIG_MORVE_URL);
-				image_origine_size_x = BIG_MORVE_SIZE_X;
-				image_origine_size_y = BIG_MORVE_SIZE_Y;
-			} else if (i.getSize() == 3) {
-				img = Toolkit.getDefaultToolkit().getImage(MEDIUM_MORVE_URL);
-				image_origine_size_x = MEDIUM_MORVE_SIZE_X;
-				image_origine_size_y = MEDIUM_MORVE_SIZE_Y;
-			} else {
-				img = Toolkit.getDefaultToolkit().getImage(SMALL_MORVE_URL);
-				image_origine_size_x = SMALL_MORVE_SIZE_X;
-				image_origine_size_y = SMALL_MORVE_SIZE_Y;
-			}
+		Line2D.Float line2 = new Line2D.Float(line2_p1, line2_p2);
+		for (MorveBean i : list) {
+			Point line1_p1 = getCoordinateCase(i.getStart_case_x(), i.getStart_case_y());
+			Point line1_p2;
 			if (i.getDirection() == 0) {
-				drawAMorveHorivontally(g2d, i, img, image_origine_size_x,
-						image_origine_size_y);
+				line1_p2 = getCoordinateCase(i.getStart_case_x() + i.getSize(),
+						i.getStart_case_y());
+				line1_p1.y += case_size_x/2;
+				line1_p2.y += case_size_y/2;
+				line1_p1.x += case_size_x/3;
+				line1_p2.x -= case_size_x/3;
 			} else {
-				drawAMorveVertically(g2d, i, img, image_origine_size_x,
-						image_origine_size_y);
+				line1_p2 = getCoordinateCase(i.getStart_case_x(),
+						i.getStart_case_y() + i.getSize());
+				line1_p1.x += case_size_x/2;
+				line1_p2.x += case_size_x/2;
+				line1_p1.y += case_size_y/3;
+				line1_p2.y -= case_size_y/3;
+			}
+			Line2D.Float line1 = new Line2D.Float(line1_p1, line1_p2);
+			if (line1.intersectsLine(line2)) {
+				cross_over = true;
+			}
+
+		}
+		if (morve.getDirection()==0) {
+			if (cross_over || (morve.getEnd_case_x() > NUMBER_CASE_Y)) {
+				return true;
+				
+			}
+		} else {
+			if (cross_over || (morve.getEnd_case_y() > NUMBER_CASE_Y)) {
+				return false;
 			}
 		}
-		retriveG2dState(g2d);
+		return false;
 	}
-
+	
 	private void drawAMorveVertically(Graphics2D g2d, MorveBean morve,
 			Image img, double image_origine_size_x, double image_origine_size_y) {
 		saveG2dState(g2d);
@@ -460,23 +470,35 @@ public class GridPanel extends JPanel implements IConstantView,
 		g2d.drawImage(img, af, null);
 		retriveG2dState(g2d);
 	}
-
-	public int[] getCaseFromPosition(Point p) {
-		int[] caseInGrid = new int[2];
-		int x = p.x - BORDER;
-		int y = p.y - BORDER;
-		int case_x = x / case_size_x;
-		int case_y = y / case_size_y;
-		if (case_x < 0 || case_x >= nb_case_x || case_y < 0
-				|| case_y >= nb_case_y) {
-			case_x = -1;
-			case_y = -1;
-		}
-		caseInGrid[0] = case_x;
-		caseInGrid[1] = case_y;
-		return caseInGrid;
+	
+	private void drawBorder(Graphics2D g2d) {
+		saveG2dState(g2d);
+		Rectangle2D.Float recBorderUp = new Rectangle2D.Float(0, 0, getWidth(), BORDER);
+		int borderDown = BORDER + (nb_case_y*case_size_y);
+		Rectangle2D.Float recBorderDown = new Rectangle2D.Float(0, borderDown+1, getWidth(), BORDER);
+		Rectangle2D.Float recBorderleft = new Rectangle2D.Float(0, 0, BORDER, getHeight());
+		int borderRight = BORDER + (nb_case_x*case_size_x);
+		Rectangle2D.Float recBorderRight = new Rectangle2D.Float(borderRight+1, 0, BORDER, getHeight());
+		g2d.setColor(BACKGROUND_COLOR);
+		g2d.fill(recBorderUp);
+		g2d.fill(recBorderDown);
+		g2d.fill(recBorderleft);
+		g2d.fill(recBorderRight);
+		retriveG2dState(g2d);
 	}
 
+	private void saveG2dState(Graphics2D g2d) {
+		g2dStroke = g2d.getStroke();
+		g2dColor = g2d.getColor();
+		g2dComposite = g2d.getComposite();
+	}
+
+	private void retriveG2dState(Graphics2D g2d) {
+		g2d.setStroke(g2dStroke);
+		g2d.setColor(g2dColor);
+		g2d.setComposite(g2dComposite);
+	}
+	
 	private void drawGrid(Graphics2D g2d) {
 		saveG2dState(g2d);
 		g2d.setPaint(GRID_COLOR);
@@ -496,7 +518,44 @@ public class GridPanel extends JPanel implements IConstantView,
 		}
 		retriveG2dState(g2d);
 	}
+	
+	/*
+	 * Getter Setter section
+	 */
+	private static Point getCoordinateCase(int i, int j) {
+		int x = case_size_x * i + BORDER;
+		int y = case_size_y * j + BORDER;
 
+		Point down_left_corner = new Point();
+		down_left_corner.x = x;
+		down_left_corner.y = y;
+		return down_left_corner;
+	}
+	public int[] getCaseFromPosition(Point p) {
+		int[] caseInGrid = new int[2];
+		int x = p.x - BORDER;
+		int y = p.y - BORDER;
+		int case_x = x / case_size_x;
+		int case_y = y / case_size_y;
+		if (case_x < 0 || case_x >= nb_case_x || case_y < 0
+				|| case_y >= nb_case_y) {
+			case_x = -1;
+			case_y = -1;
+		}
+		caseInGrid[0] = case_x;
+		caseInGrid[1] = case_y;
+		return caseInGrid;
+	}
+	public int getState() {
+		return state;
+	}
+	public boolean isMorveAddValid() {
+		return morveAddValid;
+	}
+
+	public MorveBean getMorve() {
+		return morve;
+	}
 	public void setState(int state, ArrayList<MorveBean> my_table_morve,
 			boolean[][] my_table_visibility, boolean[][] my_table_shot) {
 		this.my_table_movre = my_table_morve;
