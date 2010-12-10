@@ -42,7 +42,11 @@ public class GridPanel extends JPanel implements IConstantView,
 	private int case_size_x;
 	private int case_size_y;
 	private int no_grid;
-	private int state = TYPEADDMORVE;
+	private int state = 0;
+	public int getState() {
+		return state;
+	}
+
 	private KeyListenerAddMorveAndSpray keyListener;
 
 	public GridPanel(MainView view, int no_grid,
@@ -194,6 +198,15 @@ public class GridPanel extends JPanel implements IConstantView,
 		}
 		retriveG2dState(g2d);
 	}
+	private MorveBean morve;
+	private boolean morveAddValid=true;
+	public boolean isMorveAddValid() {
+		return morveAddValid;
+	}
+
+	public MorveBean getMorve() {
+		return morve;
+	}
 
 	private void drawAddMorve(Graphics2D g2d, int morve_size) {
 		saveG2dState(g2d);
@@ -210,12 +223,13 @@ public class GridPanel extends JPanel implements IConstantView,
 			Image img;
 			int image_origine_size_x;
 			int image_origine_size_y;
-			MorveBean morve;
+			
 			if (ctrl) {
 				morve = new MorveBean(cas[0], cas[1], morve_size, false);
 			} else {
 				morve = new MorveBean(cas[0], cas[1], morve_size, true);
 			}
+			//TODO add constant
 			if (morve.getSize() == 4) {
 				img = Toolkit.getDefaultToolkit().getImage(BIG_MORVE_URL);
 				image_origine_size_x = BIG_MORVE_SIZE_X;
@@ -285,6 +299,10 @@ public class GridPanel extends JPanel implements IConstantView,
 					Point point = getCoordinateCase(cas[0], cas[1]);
 					g2d.fill(new Rectangle2D.Float(point.x, point.y,
 							case_size_x * morve_size, case_size_y));
+					morveAddValid=false;
+					
+				}else{
+					morveAddValid=true;
 				}
 			} else {
 				if (cross_over || (cas[1] + morve_size > nb_case_y)) {
@@ -292,6 +310,9 @@ public class GridPanel extends JPanel implements IConstantView,
 					Point point = getCoordinateCase(cas[0], cas[1]);
 					g2d.fill(new Rectangle2D.Float(point.x, point.y,
 							case_size_x, case_size_y * morve_size));
+					morveAddValid=false;
+				}else{
+					morveAddValid=true;
 				}
 			}
 		}

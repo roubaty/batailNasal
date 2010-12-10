@@ -10,7 +10,7 @@ public class MyMouseListener  implements MouseListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		e.getPoint();
+		view.actionFromGridPanel(e.getPoint());
 	}
 
 	@Override
