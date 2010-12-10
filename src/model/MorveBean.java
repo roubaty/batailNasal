@@ -11,7 +11,8 @@ public class MorveBean {
 	public MorveBean(int start_case_x, int start_case_y, int end_case_x, int end_case_y){
 		this.start_case_x=start_case_x;
 		this.start_case_y=start_case_y;
-		this.size=start_case_x-start_case_y+end_case_x-end_case_y;
+		this.size=-start_case_x+start_case_y-end_case_x-end_case_y;
+		System.out.println(size);
 		this.direction=(start_case_x==end_case_x) ? 1 :0 ;
 		this.end_case_x=end_case_x;
 		this.end_case_y=end_case_y;

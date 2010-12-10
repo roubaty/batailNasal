@@ -212,9 +212,9 @@ public class GridPanel extends JPanel implements IConstantView,
 			int image_origine_size_y;
 			MorveBean morve;
 			if (ctrl) {
-				morve = new MorveBean(cas[0], cas[1], morve_size, 0);
+				morve = new MorveBean(cas[0], cas[1], morve_size, false);
 			} else {
-				morve = new MorveBean(cas[0], cas[1], morve_size, 1);
+				morve = new MorveBean(cas[0], cas[1], morve_size, true);
 			}
 			if (morve.getSize() == 4) {
 				img = Toolkit.getDefaultToolkit().getImage(BIG_MORVE_URL);
