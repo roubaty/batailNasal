@@ -371,7 +371,7 @@ public class GridPanel extends JPanel implements IConstantView,
 		}
 		retriveG2dState(g2d);
 	}
-	private static boolean isValideAdd(MorveBean morve, ArrayList<MorveBean> list){
+	public static boolean isValideAdd(MorveBean morve, ArrayList<MorveBean> list){
 		boolean cross_over = false;
 		
 		Point line2_p1 = getCoordinateCase(morve.getStart_case_x(), morve.getStart_case_y());
