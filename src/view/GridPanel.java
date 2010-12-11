@@ -651,7 +651,7 @@ public class GridPanel extends JPanel implements IConstantView,
 		this.state = state;
 	}
 
-	private static boolean isValideAdd(MorveBean morve,
+	public static boolean isValideAdd(MorveBean morve,
 			ArrayList<MorveBean> list) {
 		boolean cross_over = false;
 
