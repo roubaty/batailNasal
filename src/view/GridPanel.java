@@ -698,12 +698,10 @@ public class GridPanel extends JPanel implements IConstantView,
 
 		}
 		if (morve.getDirection() == 1) {
-			System.out.println("0 : " + morve.getEnd_case_x());
 			if (cross_over || (morve.getEnd_case_x() > NUMBER_CASE_X)) {
 				return false;
 			}
 		} else {
-			System.out.println("1 : " + morve.getEnd_case_y());
 			if (cross_over || (morve.getEnd_case_y() > NUMBER_CASE_Y)) {
 				return false;
 			}
