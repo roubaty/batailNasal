@@ -26,6 +26,14 @@ public interface IConstantView {
 	public static final int SCAN_STROKE = 3;
 	public static final float SCAN_TRANSPARENCE = 0.5f;
 	
+	public static final float SCOPE_STROKE = 3;
+	public static final Color SCOPE_COLOR = Color.RED;
+	
+	public static final int SPRAY_SIZE = 3;
+	public static final int SPRAY_STROKE = 1;
+	public static final Color SPRAY_COLOR = Color.RED;
+	public static final int SPRAY_DENSITY = 2000;
+	
 	public static final Color CASE_NONVISIBLE_COLOR = new Color(204, 204, 255);
 	
 	public static final Color BACKGROUND_COLOR = new Color(204, 255, 255);
