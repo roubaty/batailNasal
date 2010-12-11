@@ -30,8 +30,8 @@ public class Controller implements IController {
 	}
 
 	private void initComponent() {
-		mainView = new MainView(this);
 		secondaryView = new SecondaryView(this);
+		mainView = new MainView(this);
 		worker = new Worker(this);
 		worker.addObserver(mainView);
 	}

@@ -11,9 +11,10 @@ public class GameBean implements IConstantsGlobal{
 	private int state;
 	private ArrayList<MorveBean> playerTableMorve;
 	private ArrayList<MorveBean> iaTableMorve;
-	private boolean[][] visible = new boolean[NUMBER_CASE_X][NUMBER_CASE_Y];
-	private boolean[][] playerTableShot = new boolean[NUMBER_CASE_X][NUMBER_CASE_Y];
-	private boolean[][] iaTableShot = new boolean[NUMBER_CASE_X][NUMBER_CASE_Y];
+	private boolean[][] visible;
+	private boolean[][] playerTableShot;
+	private boolean[][] iaTableShot;
+	private int sizeMorve;
 	
 	public int getState() {
 		return state;
@@ -63,6 +64,13 @@ public class GameBean implements IConstantsGlobal{
 	}
 	public void setSound(int sound) {
 		this.sound = sound;
+	}
+
+	public void setSizeMorve(int sizeMorve) {
+		this.sizeMorve = sizeMorve;
+	}
+	public int getSizeMorve() {
+		return sizeMorve;
 	}
 	
 	
