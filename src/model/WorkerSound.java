@@ -11,7 +11,9 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine; 
 import javax.sound.sampled.UnsupportedAudioFileException; 
 
-public class WorkerSound extends Thread{
+import constants.IConstantsGlobal;
+
+public class WorkerSound extends Thread implements IConstantsGlobal{
 
 	    private String filename;
 	 
@@ -23,8 +25,12 @@ public class WorkerSound extends Thread{
 	        LEFT, RIGHT, NORMAL
 	    };
 	 
-	    public WorkerSound(String wavfile) { 
-	        filename = wavfile;
+	    public WorkerSound(String wavfile, int langage) { 
+	    	if(langage == LANGAGEFR){
+	    		filename = "src/ressources/sounds/fr_" + wavfile;
+	    	} else {
+	    		filename = "src/ressources/sounds/en_" + wavfile;
+	    	}
 	        curPosition = Position.NORMAL;
 	    } 
 

@@ -15,10 +15,11 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	private GameBean gb;
 	private short countMorve;
 	private short countNormalShot;
-	private int countMaxHitPlayer;
-	private int countMaxHitIA;
-	private int countHitPlayer;
-	private int countHitIA;
+	private short countTripleShot;
+	private short countMaxHitPlayer;
+	private short countMaxHitIA;
+	private short countHitPlayer;
+	private short countHitIA;
 	private Random r = new Random();
 	
 	/**
@@ -63,6 +64,7 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 		countMaxHitIA = MAXHITDEFAULT;
 		countHitPlayer = 0;
 		countHitIA = 0;
+		countTripleShot = 0;
 		
 		// prepare game
 		gb.setState(TYPEADDMORVE_START);
@@ -78,23 +80,48 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	
 	// return a random bonus
 	private int getRandomBonus(){
+		countNormalShot = 0;
 		int nr = r.nextInt(100);
 		if(nr < 40){
 			// triple shot
+			// sounds get bonus triple
+			if(gb.getSound() == SOUNDON){
+				new WorkerSound("triple_shots.wav",gb.getLangage()).start();
+			}
 			return TYPETRIPLE;
 		}
 		else if (nr < 70){
 			// spray
+			// sounds
+			if(gb.getSound() == SOUNDON){
+				new WorkerSound("bonus_spray.wav",gb.getLangage()).start();
+			}
 			return TYPESPRAY;
 		}
 		else if (nr < 90){
 			// add morve
+			// sounds
+			if(gb.getSound() == SOUNDON){
+				new WorkerSound("add_morve.wav",gb.getLangage()).start();
+			}
 			return TYPEADDMORVE;
 		}
 		else {
 			// scan
+			// sounds
+			if(gb.getSound() == SOUNDON){
+				new WorkerSound("debusquage.wav",gb.getLangage()).start();
+			}
 			return TYPESCAN;
 		}
+	}
+	
+	/**
+	 * method for ia playing its turn
+	 * @param BonusTurn true if it is a bonus turn
+	 */
+	private void iaTurn(boolean BonusTurn){
+		// TODO ia turn, with and without bonus
 	}
 	
 	private void addIAMorve(){
@@ -110,13 +137,13 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 			}
 			int startX_morveIA = r.nextInt(NUMBER_CASE_X) + 1;
 			int startY_morveIA = r.nextInt(NUMBER_CASE_Y) + 1;
+			int endX_morveIA;
+			int endY_morveIA;
 			switch(i){
 				case 0:
 					// add big morve
-					int endX_morveIA;
-					int endY_morveIA;
 					if(direction == HORIZONTAL){
-						if(startX_morveIA > 5){
+						if(startX_morveIA > MORVESIZEBIG){
 							endX_morveIA = startX_morveIA-MORVESIZEBIG;
 						} else{
 							endX_morveIA = startX_morveIA+MORVESIZEBIG;
@@ -124,7 +151,7 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 						endY_morveIA = startY_morveIA;
 					}
 					else{
-						if(startY_morveIA > 5){
+						if(startY_morveIA > MORVESIZEBIG){
 							endY_morveIA = startY_morveIA-MORVESIZEBIG;
 						} else{
 							endY_morveIA = startY_morveIA+MORVESIZEBIG;
@@ -140,11 +167,51 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 				case 1:
 				case 2:
 					// add middle morve
-					
+					if(direction == HORIZONTAL){
+						if(startX_morveIA > MORVESIZEMIDDLE){
+							endX_morveIA = startX_morveIA-MORVESIZEMIDDLE;
+						} else{
+							endX_morveIA = startX_morveIA+MORVESIZEMIDDLE;
+						}
+						endY_morveIA = startY_morveIA;
+					}
+					else{
+						if(startY_morveIA > MORVESIZEMIDDLE){
+							endY_morveIA = startY_morveIA-MORVESIZEMIDDLE;
+						} else{
+							endY_morveIA = startY_morveIA+MORVESIZEMIDDLE;
+						}
+						endX_morveIA = startX_morveIA;
+					}
+					m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA, endY_morveIA);
+					if(GridPanel.isValideAdd(m, gb.getIaTableMorve())){
+						gb.getIaTableMorve().add(m);
+						i++;
+					}
 					break;
 				default:
 					// add little morve
-					
+					if(direction == HORIZONTAL){
+						if(startX_morveIA > MORVESIZELITTLE){
+							endX_morveIA = startX_morveIA-MORVESIZELITTLE;
+						} else{
+							endX_morveIA = startX_morveIA+MORVESIZELITTLE;
+						}
+						endY_morveIA = startY_morveIA;
+					}
+					else{
+						if(startY_morveIA > MORVESIZELITTLE){
+							endY_morveIA = startY_morveIA-MORVESIZELITTLE;
+						} else{
+							endY_morveIA = startY_morveIA+MORVESIZELITTLE;
+						}
+						endX_morveIA = startX_morveIA;
+					}
+					m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA, endY_morveIA);
+					if(GridPanel.isValideAdd(m, gb.getIaTableMorve())){
+						gb.getIaTableMorve().add(m);
+						i++;
+					}
 					break;
 			}
 		}
@@ -154,7 +221,7 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	 * PRE: receive valid positions to place morve
 	 */
 	public void place(int startX, int startY, int endX, int endY) {
-		// sounds ?
+		
 		// add morve to game
 		MorveBean m = new MorveBean(startX, startY, endX, endY);
 		gb.getPlayerTableMorve().add(m);
@@ -178,19 +245,20 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 				gb.setState(TYPENORMAL);
 				// sounds
 				if(gb.getSound() == SOUNDON){
-					if(gb.getLangage() == LANGAGEFR){
-						new WorkerSound("src/ressources/sounds/fr_start.wav").start();
-					} else {
-						new WorkerSound("src/ressources/sounds/en_start.wav").start();
-					}
+					new WorkerSound("start.wav",gb.getLangage()).start();
 				}
 				// ia completion of it game
 				this.addIAMorve();
 			}
 		}
 		else {
-			// TODO
-			countNormalShot = 0;
+			// TODO add morve during game
+			countMaxHitPlayer += 3;
+			// sounds for placing morve ?
+			// IA play its BONUS (! if ia win)
+			iaTurn(true);
+			// next step for player
+			gb.setState(TYPENORMAL);
 		}
 		
 		updateViews();
@@ -198,8 +266,57 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 
 	@Override
 	public void shot(int type, int posX, int posY) {
-		countNormalShot++;
 		// TODO Auto-generated method stub
+		// selon le type de tir
+		switch(type){
+		case TYPENORMAL:
+			countNormalShot++;
+			// TODO do shot
+			// ia turn
+			iaTurn(false);
+			// continuation
+			if(countNormalShot >= 4){
+				gb.setState(getRandomBonus());
+			}
+			else {
+				gb.setState(TYPENORMAL);
+			}
+			break;
+		case TYPESCAN :
+			// TODO do scan
+			// ia turn
+			iaTurn(true);
+			// continuation
+			gb.setState(TYPENORMAL);
+			break;
+		case TYPESPRAY :
+			// TODO do spray
+			// ia turn
+			iaTurn(true);
+			// continuation
+			gb.setState(TYPENORMAL);
+			break;
+		case TYPETRIPLE :
+			countTripleShot++;
+			// TODO do shot, check victory 
+			if(countTripleShot >= 3){
+				// triple shot ok
+				countTripleShot = 0;
+				// bonus turn of ia
+				iaTurn(true);
+				// next step for player
+				gb.setState(TYPENORMAL);
+			}
+			else {
+				// continue le triple shot				
+				gb.setState(TYPETRIPLE);
+			}
+			break;
+		default:
+			// unknow state
+			System.out.println("Error in Worker, unknow shot state.");
+			break;
+		}
 		updateViews();
 	}
 
