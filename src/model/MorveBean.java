@@ -23,11 +23,11 @@ public class MorveBean {
 		this.size=size;
 		this.direction=(direction)? 1 : 0;
 		if(direction){
-			this.end_case_x=start_case_x;
-			this.end_case_y=start_case_y+size-1;
-		}else{
-			this.end_case_x=start_case_x+size-1;
+			this.end_case_x=start_case_x+size;
 			this.end_case_y=start_case_y;
+		}else{
+			this.end_case_x=start_case_x;
+			this.end_case_y=start_case_y+size;
 		}
 	}
 	public int getStart_case_x() {
