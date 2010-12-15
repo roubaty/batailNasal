@@ -12,6 +12,8 @@ import java.awt.PointerInfo;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
@@ -20,8 +22,10 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.lang.model.element.TypeParameterElement;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import constants.IConstantView;
 import constants.IConstantsGlobal;
@@ -29,7 +33,7 @@ import constants.IConstantsGlobal;
 import model.MorveBean;
 
 public class GridPanel extends JPanel implements IConstantView,
-		IConstantsGlobal {
+		IConstantsGlobal, ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	private int nb_case_x = NUMBER_CASE_X; 										// number of case in grid on x
@@ -43,11 +47,9 @@ public class GridPanel extends JPanel implements IConstantView,
 	private static int case_size_y; // Size in y of a case in the grid
 	private int no_grid; // Number of the grid 0 for player_grid and 1 for
 							// ai_grid
-	private int state = TYPEADDMORVE; // State of the program
+	private int state = TYPETRIPLE; // State of the program
 	private KeyListenerAddMorveAndSpray keyListener; // keyListener to go if the
 														// touch CTRL is press
-	private GridThreadScanAndAddMorve modificationState = new GridThreadScanAndAddMorve(
-			this); // Process to repaint the grid at 10Hz when we need
 	private MorveBean morve; // Morve that is going to be had on state :
 								// TYPEADDMORVE
 	private boolean morveAddValid = true; // Define if the morve is valid to be
@@ -56,7 +58,7 @@ public class GridPanel extends JPanel implements IConstantView,
 	private Stroke g2dStroke; // Stroke use the save and retrieve g2d
 	private Color g2dColor; // Color use the save and retrieve g2d
 	private Composite g2dComposite; // Composite use the save and retrieve g2d
-
+	private Timer timer;
 	/*
 	 * Initialization section
 	 */
@@ -72,7 +74,9 @@ public class GridPanel extends JPanel implements IConstantView,
 		this.no_grid = no_grid;
 		my_table_visibility = new boolean[nb_case_x][nb_case_y];
 		my_table_shot = new boolean[nb_case_x][nb_case_y];
-		;
+		timer = new Timer(100, this);
+		timer.setInitialDelay(500);
+		timer.start();
 	}
 
 	/**
@@ -100,39 +104,22 @@ public class GridPanel extends JPanel implements IConstantView,
 		drawShot(g2d);
 		if (no_grid == 1) {
 			drawVisibility(g2d);
-		}
-		drawGrid(g2d);
-		if (state == TYPESCAN) {
-			if (no_grid == 1) {
-				if (!modificationState.isAlive()) {
-					modificationState.start();
-				}
-				drawScan(g2d);
+			drawGrid(g2d);
+			switch(state){
+				case TYPESCAN:drawScan(g2d);drawBorder(g2d);break;
+				case TYPESPRAY:drawSpray(g2d);drawBorder(g2d);break;
+				case TYPENORMAL:
+				case TYPETRIPLE:drawScope(g2d);break;
+				default:
+			}
+		}else{
+			drawGrid(g2d);
+			switch(state){
+				case TYPEADDMORVE:drawAddMorve(g2d, 3);break;
+				case TYPESPRAY:drawSpray(g2d);break;
+				default:
 			}
 			drawBorder(g2d);
-		} else if (state == TYPESPRAY) {
-			if (no_grid == 1) {
-				if (!modificationState.isAlive()) {
-					modificationState.start();
-				}
-				drawSpray(g2d);
-			}
-			drawBorder(g2d);
-		} else if (state == TYPEADDMORVE) {
-			if (no_grid == 0) {
-				if (!modificationState.isAlive()) {
-					modificationState.start();
-				}
-				drawAddMorve(g2d, 3);
-			}
-			drawBorder(g2d);
-		} else if (state == TYPENORMAL || state == TYPETRIPLE) {
-			if (no_grid == 0) {
-				if (!modificationState.isAlive()) {
-					modificationState.start();
-				}
-				drawScope(g2d);
-			}
 		}
 	}
 
@@ -150,11 +137,11 @@ public class GridPanel extends JPanel implements IConstantView,
 			int image_origine_size_y;
 			// Choice the right image and define the size of this image from the
 			// size of the morve
-			if (i.getSize() == 4) {
+			if (i.getSize() == 5) {
 				img = Toolkit.getDefaultToolkit().getImage(BIG_MORVE_URL);
 				image_origine_size_x = BIG_MORVE_SIZE_X;
 				image_origine_size_y = BIG_MORVE_SIZE_Y;
-			} else if (i.getSize() == 3) {
+			} else if (i.getSize() == 4) {
 				img = Toolkit.getDefaultToolkit().getImage(MEDIUM_MORVE_URL);
 				image_origine_size_x = MEDIUM_MORVE_SIZE_X;
 				image_origine_size_y = MEDIUM_MORVE_SIZE_Y;
@@ -410,9 +397,11 @@ public class GridPanel extends JPanel implements IConstantView,
 				} else {
 					Point point = getCoordinateCase(cas[0], cas[1]);
 					g2d.fill(new Rectangle2D.Float(point.x, point.y,
-							case_size_x, case_size_y * morve_size));
-					morveAddValid = false;
+							case_size_x, case_size_y * morve_size));	
 				}
+				morveAddValid = false;
+			}else{
+				morveAddValid = true;
 			}
 		}
 		retriveG2dState(g2d);
@@ -707,5 +696,10 @@ public class GridPanel extends JPanel implements IConstantView,
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		repaint();
 	}
 }

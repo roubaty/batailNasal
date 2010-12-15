@@ -9,8 +9,8 @@ public class GameBean implements IConstantsGlobal{
 	private int langage;
 	private int sound;
 	private int state;
-	private ArrayList<MorveBean> playerTableMorve;
-	private ArrayList<MorveBean> iaTableMorve;
+	private ArrayList<MorveBean> playerTableMorve = new ArrayList<MorveBean>();
+	private ArrayList<MorveBean> iaTableMorve = new ArrayList<MorveBean>();
 	private boolean[][] visible;
 	private boolean[][] playerTableShot;
 	private boolean[][] iaTableShot;
