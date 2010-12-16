@@ -34,6 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import model.GameBean;
 import model.MorveBean;
 
 public class MainView implements ActionListener, Observer, IView,
@@ -78,6 +79,7 @@ public class MainView implements ActionListener, Observer, IView,
 	private JButton soundButton;
 	private ImageIcon iconSoundOn;
 	private ImageIcon iconSoundOff;
+	private static int lang;
 
 	/**
 	 * Creates new form TextElementDisplayPanel
@@ -91,7 +93,7 @@ public class MainView implements ActionListener, Observer, IView,
 		this.controller = controller2;
 
 		rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
-
+		lang = LANGAGEFR;
 		initFrame();
 		initComponents();
 		localInitialization();
@@ -109,7 +111,9 @@ public class MainView implements ActionListener, Observer, IView,
 				System.exit(0);
 			}
 		});
-		frame.setPreferredSize(new Dimension(800, 550));
+
+		frame.setPreferredSize(new Dimension(780, 540));
+
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -298,24 +302,85 @@ public class MainView implements ActionListener, Observer, IView,
 		if (source == menuItemQuit) {
 			System.exit(0);
 		} else if (source == menuItemFR) {
-			ActionLangage actionLangage = new ActionLangage(
-					IConstantsGlobal.LANGAGEFR);
+			lang = LANGAGEFR;
+			ActionLangage actionLangage = new ActionLangage(LANGAGEFR);
 			controller.actionOccured(actionLangage);
 		} else if (source == menuItemEN) {
-			ActionLangage actionLangage = new ActionLangage(
-					IConstantsGlobal.LANGAGEEN);
+			lang = LANGAGEEN;
+			ActionLangage actionLangage = new ActionLangage(LANGAGEEN);
 			controller.actionOccured(actionLangage);
 		} else if (source == soundButton) {
 			ActionSound actionSound = new ActionSound();
 			controller.actionOccured(actionSound);
-		} else if (source == menuHelp) {
-			GenericView helpView = new GenericView();
+		} else if (source == menuItemAbout) {
+			GenericView aboutView = new GenericView("ABOUT", lang);
+		} else if (source == menuItemDonate) {
+			GenericView donateView = new GenericView("DONATE", lang);
 		}
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable obs, GameBean obj) {
+		if (obj.getState() == LANGAGEEN) {
+			rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
+			changeLabels();
+		} else if (obj.getState() == LANGAGEFR) {
+			rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
+			changeLabels();
+		}
+		if (obj.getState() == SOUNDSON) {
+			soundButton.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/soundOn.gif")));
 
+		} else if (obj.getState() == SOUNDSOFF) {
+			soundButton.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/soundOff.gif")));
+		}
+		switch (obj.getState()) {
+		case 1:
+			infoLabel.setText(rLabels.getString("msg_player_turn"));
+			break;
+		case 2:
+			infoLabel.setText(rLabels.getString("msg_ia_turn"));
+			break;
+		case 3:
+			infoLabel.setText(rLabels.getString("msg_player_good"));
+			break;
+		case 4:
+			infoLabel.setText(rLabels.getString("msg_player_bad"));
+			break;
+		case 5:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_triple"));
+			break;
+		case 6:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_spray"));
+			break;
+		case 7:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_add"));
+			break;
+		case 8:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_radar"));
+			break;
+		case 9:
+			infoLabel.setText(rLabels.getString("msg_player_win"));
+			break;
+		case 10:
+			infoLabel.setText(rLabels.getString("msg_player_loose"));
+			break;
+		case 11:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_triple"));
+			break;
+		case 12:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_spray"));
+			break;
+		case 13:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_add"));
+			break;
+		case 14:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_radar"));
+			break;
+		}
+		// rafraichissement frame
+		frame.getRootPane().revalidate();
 	}
 
 	public void actionFromGridPanel(Point point) {
@@ -350,5 +415,11 @@ public class MainView implements ActionListener, Observer, IView,
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 }
