@@ -77,8 +77,6 @@ public class MainView implements ActionListener, Observer, IView,
 	private GridPanel grid2Panel;
 	private ResourceBundle rLabels;
 	private JButton soundButton;
-	private ImageIcon iconSoundOn;
-	private ImageIcon iconSoundOff;
 	private static int lang;
 
 	/**
@@ -319,67 +317,68 @@ public class MainView implements ActionListener, Observer, IView,
 		}
 	}
 
-	public void update(Observable obs, GameBean obj) {
-		if (obj.getState() == LANGAGEEN) {
+	public void update(Observable obs, Object bean) {
+		GameBean obj = (GameBean) bean;
+		if (obj.getLangage() == LANGAGEEN) {
 			rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
 			changeLabels();
-		} else if (obj.getState() == LANGAGEFR) {
+		} else if (obj.getLangage() == LANGAGEFR) {
 			rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
 			changeLabels();
 		}
-		if (obj.getState() == SOUNDSON) {
+		if (obj.getSound() == SOUNDSON) {
 			soundButton.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/soundOn.gif")));
 
-		} else if (obj.getState() == SOUNDSOFF) {
+		} else if (obj.getSound() == SOUNDSOFF) {
 			soundButton.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/soundOff.gif")));
 		}
-		switch (obj.getState()) {
-		case 1:
+		switch (obj.getMsg()) {
+
+		case MSGPLAYERTURN:
 			infoLabel.setText(rLabels.getString("msg_player_turn"));
 			break;
-		case 2:
+		case MSGIATURN:
 			infoLabel.setText(rLabels.getString("msg_ia_turn"));
 			break;
-		case 3:
+		case MSGPLAYERGOOD:
 			infoLabel.setText(rLabels.getString("msg_player_good"));
 			break;
-		case 4:
+		case MSGPLAYERBAD:
 			infoLabel.setText(rLabels.getString("msg_player_bad"));
 			break;
-		case 5:
+		case MSGPLAYERBONUSTRIPLE:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_triple"));
 			break;
-		case 6:
+		case MSGPLAYERBONUSSPRAY:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_spray"));
 			break;
-		case 7:
+		case MSGPLAYERBONUSADD:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_add"));
 			break;
-		case 8:
+		case MSGPLAYERBONUSRADAR:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_radar"));
 			break;
-		case 9:
+		case MSGPLAYERWIN:
 			infoLabel.setText(rLabels.getString("msg_player_win"));
 			break;
-		case 10:
+		case MSGPLAYERLOOSE:
 			infoLabel.setText(rLabels.getString("msg_player_loose"));
 			break;
-		case 11:
+		case MSGIABONUSTRIPLE:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_triple"));
 			break;
-		case 12:
+		case MSGIABONUSSPRAY:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_spray"));
 			break;
-		case 13:
+		case MSGIABONUSADD:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_add"));
 			break;
-		case 14:
+		case MSGIABONUSRADAR:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_radar"));
 			break;
 		}
-		// rafraichissement frame
 		frame.getRootPane().revalidate();
 	}
 
@@ -415,11 +414,5 @@ public class MainView implements ActionListener, Observer, IView,
 		default:
 			break;
 		}
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 }
