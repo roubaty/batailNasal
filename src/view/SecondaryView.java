@@ -73,7 +73,7 @@ public class SecondaryView implements ActionListener, IView {
 			logArea.setBounds(new Rectangle(0, 0, 400, 200));
 			imgLabel = new JLabel();
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/bonus_spray.gif")));
+					"../ressources/pictures/init.gif")));
 			logPanel = new JPanel();
 			logPanel.setBounds(new Rectangle(400, 0, 200, 200));
 			logPanel.add(imgLabel, null);
