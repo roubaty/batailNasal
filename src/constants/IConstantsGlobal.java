@@ -23,4 +23,18 @@ public interface IConstantsGlobal {
 	public static final int MAXHITDEFAULT = 22;
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 1;
+	public static final int MSGPLAYERTURN = 0;
+	public static final int MSGIATURN = 1;
+	public static final int MSGPLAYERGOOD = 2;
+	public static final int MSGPLAYERBAD = 3;
+	public static final int MSGPLAYERBONUSTRIPLE = 4;
+	public static final int MSGPLAYERBONUSSPRAY = 5;
+	public static final int MSGPLAYERBONUSADD = 6;
+	public static final int MSGPLAYERBONUSRADAR = 7;
+	public static final int MSGPLAYERWIN = 8;
+	public static final int MSGPLAYERLOOSE = 9;
+	public static final int MSGIABONUSTRIPLE = 10;
+	public static final int MSGIABONUSSPRAY = 11;
+	public static final int MSGIABONUSADD = 12;
+	public static final int MSGIABONUSRADAR = 13;
 }
