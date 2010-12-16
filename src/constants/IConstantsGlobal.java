@@ -13,6 +13,8 @@ public interface IConstantsGlobal {
 	public static final int STATECHANGESOUNDS = 7;
 	public static final int LANGAGEEN = 0;
 	public static final int LANGAGEFR = 1;
+	public static final int SOUNDSON = 0;
+	public static final int SOUNDSOFF = 1;
 	public static final int SCAN_SIZE_X = 3;
 	public static final int SCAN_SIZE_Y = 3;
 	public static final int MORVESIZEBIG = 5;
