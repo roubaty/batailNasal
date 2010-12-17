@@ -314,6 +314,9 @@ public class MainView implements ActionListener, Observer, IView,
 			GenericView aboutView = new GenericView("ABOUT", lang);
 		} else if (source == menuItemDonate) {
 			GenericView donateView = new GenericView("DONATE", lang);
+		}else if(source == menuItemNew){
+			ActionNewGame actionNewGame = new ActionNewGame();
+			controller.actionOccured(actionNewGame);
 		}
 	}
 
@@ -380,16 +383,20 @@ public class MainView implements ActionListener, Observer, IView,
 			break;
 		}
 		frame.getRootPane().revalidate();
+		grid1Panel.setState(obj.getState(), obj.getPlayerTableMorve(),grid1Panel.my_table_visibility, obj.getPlayerTableShot(),obj.getSizeMorve());
+		grid2Panel.setState(obj.getState(), obj.getIaTableMorve(), obj.getVisible(), obj.getIaTableShot(),obj.getSizeMorve());
 	}
 
 	public void actionFromGridPanel(Point point) {
 		int[] pos = grid1Panel.getCaseFromPosition(point);
 		switch (grid1Panel.getState()) {
+		case TYPEADDMORVE_START:
 		case TYPEADDMORVE:
 			if (grid1Panel.isMorveAddValid()) {
 				MorveBean morve = grid1Panel.getMorve();
+				System.out.println(morve);
 				ActionPlace action = new ActionPlace(morve.getStart_case_x(),
-						morve.getEnd_case_y(), morve.getEnd_case_x(),
+						morve.getStart_case_y(), morve.getEnd_case_x(),
 						morve.getEnd_case_y());
 				controller.actionOccured(action);
 			}

@@ -11,7 +11,7 @@ public class MorveBean {
 	public MorveBean(int start_case_x, int start_case_y, int end_case_x, int end_case_y){
 		this.start_case_x=start_case_x;
 		this.start_case_y=start_case_y;
-		this.size=-start_case_x+start_case_y-end_case_x-end_case_y;
+		this.size=-start_case_x-start_case_y+end_case_x+end_case_y;
 		System.out.println(size);
 		this.direction=(start_case_x==end_case_x) ? 1 :0 ;
 		this.end_case_x=end_case_x;
@@ -47,5 +47,21 @@ public class MorveBean {
 	}
 	public int getEnd_case_y() {
 		return end_case_y;
+	}
+	public String toString(){
+		String s = "start_case_x : "+start_case_x + "\n";
+		s += "start_case_y : "+start_case_y + "\n";
+		s += "end_case_x : "+end_case_x + "\n";
+		s += "end_case_y : "+end_case_y + "\n";
+		s += "size : "+size + "\n";
+		s += "direction : "+direction + "\n";
+		return s;
+	}
+	public boolean isOnAMorve(int posX, int posY){
+		if(direction==0){
+			return (posY==start_case_y) && (posX>=start_case_x) && (posX<=start_case_x+size);
+		}else{
+			return (posX==start_case_x) && (posY>=start_case_y) && (posY<=start_case_y+size);
+		}
 	}
 }

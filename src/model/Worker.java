@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
+import javax.lang.model.element.TypeParameterElement;
+
 import view.GridPanel;
 
 import constants.IConstantWorker;
 import constants.IConstantsGlobal;
 import controller.IController;
 
-public class Worker extends Observable implements IWorker,IConstantsGlobal,IConstantWorker {
-	
+public class Worker extends Observable implements IWorker, IConstantsGlobal,
+		IConstantWorker {
+
 	private GameBean gb;
 	private short countMorve;
 	private short countNormalShot;
@@ -21,9 +24,10 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	private short countHitPlayer;
 	private short countHitIA;
 	private Random r = new Random();
-	
+
 	/**
 	 * Constructor of Worker, initialize the game with the default values
+	 * 
 	 * @param controller
 	 */
 	public Worker(IController controller) {
@@ -33,13 +37,13 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	/**
 	 * initialise default values and build the WorkerSound
 	 */
-	private void initGame(){
+	private void initGame() {
 		gb = new GameBean();
 		gb.setLangage(LANGAGEFR);
 		gb.setSound(SOUNDON);
 	}
-	
-	private void updateViews(){
+
+	private void updateViews() {
 		setChanged();
 		this.notifyObservers(gb);
 	}
@@ -66,7 +70,7 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 		countHitPlayer = 0;
 		countHitIA = 0;
 		countTripleShot = 0;
-		
+
 		// prepare game
 		gb.setState(TYPEADDMORVE_START);
 		gb.setSizeMorve(MORVESIZEBIG);
@@ -75,145 +79,143 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 		gb.setPlayerTableMorve(playerTableMorve);
 		gb.setPlayerTableShot(playerTableShot);
 		gb.setVisible(visible);
-		
+
 		updateViews();
 	}
-	
+
 	// return a random bonus
-	private int getRandomBonus(){
+	private int getRandomBonus() {
 		countNormalShot = 0;
 		int nr = r.nextInt(100);
-		if(nr < 40){
+		if (nr < 40) {
 			// triple shot
 			// sounds get bonus triple
-			if(gb.getSound() == SOUNDON){
-				new WorkerSound("triple_shots.wav",gb.getLangage()).start();
+			if (gb.getSound() == SOUNDON) {
+				new WorkerSound("triple_shots.wav", gb.getLangage()).start();
 			}
 			return TYPETRIPLE;
-		}
-		else if (nr < 70){
+		} else if (nr < 70) {
 			// spray
 			// sounds
-			if(gb.getSound() == SOUNDON){
-				new WorkerSound("bonus_spray.wav",gb.getLangage()).start();
+			if (gb.getSound() == SOUNDON) {
+				new WorkerSound("bonus_spray.wav", gb.getLangage()).start();
 			}
 			return TYPESPRAY;
-		}
-		else if (nr < 90){
+		} else if (nr < 90) {
 			// add morve
 			// sounds
-			if(gb.getSound() == SOUNDON){
-				new WorkerSound("add_morve.wav",gb.getLangage()).start();
+			if (gb.getSound() == SOUNDON) {
+				new WorkerSound("add_morve.wav", gb.getLangage()).start();
 			}
 			return TYPEADDMORVE;
-		}
-		else {
+		} else {
 			// scan
 			// sounds
-			if(gb.getSound() == SOUNDON){
-				new WorkerSound("debusquage.wav",gb.getLangage()).start();
+			if (gb.getSound() == SOUNDON) {
+				new WorkerSound("debusquage.wav", gb.getLangage()).start();
 			}
 			return TYPESCAN;
 		}
 	}
-	
+
 	/**
 	 * method for ia playing its turn
-	 * @param BonusTurn true if it is a bonus turn
+	 * 
+	 * @param BonusTurn
+	 *            true if it is a bonus turn
 	 */
-	private void iaTurn(boolean BonusTurn){
+	private void iaTurn(boolean BonusTurn) {
 		// TODO ia turn, with and without bonus
 	}
-	
-	private void addIAMorve(){
+
+	private void addIAMorve() {
 		MorveBean m;
 		short i = 1;
-		while(i < 6){
+		while (i < 6) {
 			int direction = r.nextInt(10);
-			if(direction < 5){
+			if (direction < 5) {
 				direction = HORIZONTAL;
-			}
-			else {
+			} else {
 				direction = VERTICAL;
 			}
 			int startX_morveIA = r.nextInt(NUMBER_CASE_X) + 1;
 			int startY_morveIA = r.nextInt(NUMBER_CASE_Y) + 1;
 			int endX_morveIA;
 			int endY_morveIA;
-			switch(i){
-				case 0:
-					// add big morve
-					if(direction == HORIZONTAL){
-						if(startX_morveIA > MORVESIZEBIG){
-							endX_morveIA = startX_morveIA-MORVESIZEBIG;
-						} else{
-							endX_morveIA = startX_morveIA+MORVESIZEBIG;
-						}
-						endY_morveIA = startY_morveIA;
+			switch (i) {
+			case 0:
+				// add big morve
+				if (direction == HORIZONTAL) {
+					if (startX_morveIA > MORVESIZEBIG) {
+						endX_morveIA = startX_morveIA - MORVESIZEBIG;
+					} else {
+						endX_morveIA = startX_morveIA + MORVESIZEBIG;
 					}
-					else{
-						if(startY_morveIA > MORVESIZEBIG){
-							endY_morveIA = startY_morveIA-MORVESIZEBIG;
-						} else{
-							endY_morveIA = startY_morveIA+MORVESIZEBIG;
-						}
-						endX_morveIA = startX_morveIA;
+					endY_morveIA = startY_morveIA;
+				} else {
+					if (startY_morveIA > MORVESIZEBIG) {
+						endY_morveIA = startY_morveIA - MORVESIZEBIG;
+					} else {
+						endY_morveIA = startY_morveIA + MORVESIZEBIG;
 					}
-					m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA, endY_morveIA);
-					if(GridPanel.isValideAdd(m, gb.getIaTableMorve())){
-						gb.getIaTableMorve().add(m);
-						i++;
+					endX_morveIA = startX_morveIA;
+				}
+				m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA,
+						endY_morveIA);
+				if (GridPanel.isValideAdd(m, gb.getIaTableMorve())) {
+					gb.getIaTableMorve().add(m);
+					i++;
+				}
+				break;
+			case 1:
+			case 2:
+				// add middle morve
+				if (direction == HORIZONTAL) {
+					if (startX_morveIA > MORVESIZEMIDDLE) {
+						endX_morveIA = startX_morveIA - MORVESIZEMIDDLE;
+					} else {
+						endX_morveIA = startX_morveIA + MORVESIZEMIDDLE;
 					}
-					break;
-				case 1:
-				case 2:
-					// add middle morve
-					if(direction == HORIZONTAL){
-						if(startX_morveIA > MORVESIZEMIDDLE){
-							endX_morveIA = startX_morveIA-MORVESIZEMIDDLE;
-						} else{
-							endX_morveIA = startX_morveIA+MORVESIZEMIDDLE;
-						}
-						endY_morveIA = startY_morveIA;
+					endY_morveIA = startY_morveIA;
+				} else {
+					if (startY_morveIA > MORVESIZEMIDDLE) {
+						endY_morveIA = startY_morveIA - MORVESIZEMIDDLE;
+					} else {
+						endY_morveIA = startY_morveIA + MORVESIZEMIDDLE;
 					}
-					else{
-						if(startY_morveIA > MORVESIZEMIDDLE){
-							endY_morveIA = startY_morveIA-MORVESIZEMIDDLE;
-						} else{
-							endY_morveIA = startY_morveIA+MORVESIZEMIDDLE;
-						}
-						endX_morveIA = startX_morveIA;
+					endX_morveIA = startX_morveIA;
+				}
+				m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA,
+						endY_morveIA);
+				if (GridPanel.isValideAdd(m, gb.getIaTableMorve())) {
+					gb.getIaTableMorve().add(m);
+					i++;
+				}
+				break;
+			default:
+				// add little morve
+				if (direction == HORIZONTAL) {
+					if (startX_morveIA > MORVESIZELITTLE) {
+						endX_morveIA = startX_morveIA - MORVESIZELITTLE;
+					} else {
+						endX_morveIA = startX_morveIA + MORVESIZELITTLE;
 					}
-					m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA, endY_morveIA);
-					if(GridPanel.isValideAdd(m, gb.getIaTableMorve())){
-						gb.getIaTableMorve().add(m);
-						i++;
+					endY_morveIA = startY_morveIA;
+				} else {
+					if (startY_morveIA > MORVESIZELITTLE) {
+						endY_morveIA = startY_morveIA - MORVESIZELITTLE;
+					} else {
+						endY_morveIA = startY_morveIA + MORVESIZELITTLE;
 					}
-					break;
-				default:
-					// add little morve
-					if(direction == HORIZONTAL){
-						if(startX_morveIA > MORVESIZELITTLE){
-							endX_morveIA = startX_morveIA-MORVESIZELITTLE;
-						} else{
-							endX_morveIA = startX_morveIA+MORVESIZELITTLE;
-						}
-						endY_morveIA = startY_morveIA;
-					}
-					else{
-						if(startY_morveIA > MORVESIZELITTLE){
-							endY_morveIA = startY_morveIA-MORVESIZELITTLE;
-						} else{
-							endY_morveIA = startY_morveIA+MORVESIZELITTLE;
-						}
-						endX_morveIA = startX_morveIA;
-					}
-					m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA, endY_morveIA);
-					if(GridPanel.isValideAdd(m, gb.getIaTableMorve())){
-						gb.getIaTableMorve().add(m);
-						i++;
-					}
-					break;
+					endX_morveIA = startX_morveIA;
+				}
+				m = new MorveBean(startX_morveIA, startY_morveIA, endX_morveIA,
+						endY_morveIA);
+				if (GridPanel.isValideAdd(m, gb.getIaTableMorve())) {
+					gb.getIaTableMorve().add(m);
+					i++;
+				}
+				break;
 			}
 		}
 	}
@@ -222,37 +224,35 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	 * PRE: receive valid positions to place morve
 	 */
 	public void place(int startX, int startY, int endX, int endY) {
-		
+
 		// add morve to game
 		MorveBean m = new MorveBean(startX, startY, endX, endY);
+		System.out.println(m);
 		gb.getPlayerTableMorve().add(m);
 		countMorve++;
-		
-		if(gb.getState() == TYPEADDMORVE_START){
-			if(countMorve < 6){
+
+		if (gb.getState() == TYPEADDMORVE_START) {
+			if (countMorve < 6) {
 				// add more morve for new game
-				if(countMorve <= 1){
+				if (countMorve <= 1) {
 					// middle morve
 					gb.setSizeMorve(MORVESIZEMIDDLE);
-				}
-				else {
+				} else {
 					// little morve
 					gb.setSizeMorve(MORVESIZELITTLE);
 				}
 				gb.setState(TYPEADDMORVE_START);
-			}
-			else{
+			} else {
 				// add morve for new game completed
 				gb.setState(TYPENORMAL);
 				// sounds
-				if(gb.getSound() == SOUNDON){
-					new WorkerSound("start.wav",gb.getLangage()).start();
+				if (gb.getSound() == SOUNDON) {
+					new WorkerSound("start.wav", gb.getLangage()).start();
 				}
 				// ia completion of it game
 				this.addIAMorve();
 			}
-		}
-		else {
+		} else {
 			// TODO add morve during game
 			countMaxHitPlayer += 3;
 			// sounds for placing morve ?
@@ -261,7 +261,7 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 			// next step for player
 			gb.setState(TYPENORMAL);
 		}
-		
+
 		updateViews();
 	}
 
@@ -269,47 +269,66 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	public void shot(int type, int posX, int posY) {
 		// TODO Auto-generated method stub
 		// selon le type de tir
-		switch(type){
+		switch (type) {
 		case TYPENORMAL:
 			countNormalShot++;
-			// TODO do shot
+			setShot(posX, posY, true);
+			setCaseVisibleTrue(posX, posY);
 			// ia turn
 			iaTurn(false);
 			// continuation
-			if(countNormalShot >= 4){
+			if (countNormalShot >= 4) {
 				gb.setState(getRandomBonus());
-			}
-			else {
+			} else {
 				gb.setState(TYPENORMAL);
 			}
 			break;
-		case TYPESCAN :
-			// TODO do scan
-			// ia turn
+		case TYPESCAN:
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3 - i; j++) {
+					setCaseVisibleTrue(posX - i, posY - j);
+					setCaseVisibleTrue(posX - i, posY + j);
+					setCaseVisibleTrue(posX + i, posY - j);
+					setCaseVisibleTrue(posX + i, posY + j);
+				}
+			}
 			iaTurn(true);
 			// continuation
 			gb.setState(TYPENORMAL);
 			break;
-		case TYPESPRAY :
-			// TODO do spray
-			// ia turn
+		case TYPESPRAY:
+			gb.getIaTableShot()[posX][posY] = true;
+			setShot(posX, posY, true);
+			setCaseVisibleTrue(posX, posY);
+
+			setShot(posX - 1, posY, true);
+			setCaseVisibleTrue(posX - 1, posY);
+
+			setShot(posX + 1, posY, true);
+			setCaseVisibleTrue(posX + 1, posY);
+
+			setShot(posX, posY - 1, true);
+			setCaseVisibleTrue(posX, posY - 1);
+
+			setShot(posX, posY + 1, true);
+			setCaseVisibleTrue(posX, posY + 1);
 			iaTurn(true);
 			// continuation
 			gb.setState(TYPENORMAL);
 			break;
-		case TYPETRIPLE :
+		case TYPETRIPLE:
 			countTripleShot++;
-			// TODO do shot, check victory 
-			if(countTripleShot >= 3){
+			setShot(posX, posY, true);
+			setCaseVisibleTrue(posX, posY);
+			if (countTripleShot >= 3) {
 				// triple shot ok
 				countTripleShot = 0;
 				// bonus turn of ia
 				iaTurn(true);
 				// next step for player
 				gb.setState(TYPENORMAL);
-			}
-			else {
-				// continue le triple shot				
+			} else {
+				// continue le triple shot
 				gb.setState(TYPETRIPLE);
 			}
 			break;
@@ -321,12 +340,53 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 		updateViews();
 	}
 
+	private void setCaseVisibleTrue(int posX, int posY) {
+		try {
+			gb.getVisible()[posX][posY] = true;
+		} catch (ArrayIndexOutOfBoundsException e) {
+
+		}
+	}
+
+	private void setShot(int posX, int posY, boolean isPlayerShot) {
+		try {
+			if (isPlayerShot) {
+				gb.getIaTableShot()[posX][posY] = true;
+			} else {
+				gb.getPlayerTableShot()[posX][posY] = true;
+			}
+			updateHitCount(posX, posY, isPlayerShot);
+		} catch (ArrayIndexOutOfBoundsException e) {
+
+		}
+	}
+
+	private void updateHitCount(int posX, int posY, boolean isPlayerShot) {
+		ArrayList<MorveBean> ml;
+		if(isPlayerShot){
+			ml = gb.getIaTableMorve();
+		}else{
+			ml = gb.getPlayerTableMorve();
+		}
+		for (MorveBean m : ml) {
+			if(m.isOnAMorve(posX, posY)){
+				if(isPlayerShot){
+					countHitPlayer++;
+				}else{
+					countMaxHitIA++;
+				}
+			}
+		}
+	}
+
 	@Override
 	public void changesound() {
-		if(gb.getSound() == SOUNDON)gb.setSound(SOUNDOOFF);
-		else gb.setSound(SOUNDON);
+		if (gb.getSound() == SOUNDON)
+			gb.setSound(SOUNDOOFF);
+		else
+			gb.setSound(SOUNDON);
 		gb.setState(STATECHANGESOUNDS);
 		updateViews();
 	}
-	
+
 }
