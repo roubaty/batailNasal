@@ -40,6 +40,7 @@ public class Worker extends Observable implements IWorker,IConstantsGlobal,ICons
 	}
 	
 	private void updateViews(){
+		setChanged();
 		this.notifyObservers(gb);
 	}
 

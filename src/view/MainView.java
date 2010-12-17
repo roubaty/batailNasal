@@ -34,6 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import model.GameBean;
 import model.MorveBean;
 
 public class MainView implements ActionListener, Observer, IView,
@@ -76,8 +77,7 @@ public class MainView implements ActionListener, Observer, IView,
 	private GridPanel grid2Panel;
 	private ResourceBundle rLabels;
 	private JButton soundButton;
-	private ImageIcon iconSoundOn;
-	private ImageIcon iconSoundOff;
+	private static int lang;
 
 	/**
 	 * Creates new form TextElementDisplayPanel
@@ -91,7 +91,7 @@ public class MainView implements ActionListener, Observer, IView,
 		this.controller = controller2;
 
 		rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
-
+		lang = LANGAGEFR;
 		initFrame();
 		initComponents();
 		localInitialization();
@@ -109,7 +109,9 @@ public class MainView implements ActionListener, Observer, IView,
 				System.exit(0);
 			}
 		});
-		frame.setPreferredSize(new Dimension(800, 550));
+
+		frame.setPreferredSize(new Dimension(780, 540));
+
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -298,24 +300,86 @@ public class MainView implements ActionListener, Observer, IView,
 		if (source == menuItemQuit) {
 			System.exit(0);
 		} else if (source == menuItemFR) {
-			ActionLangage actionLangage = new ActionLangage(
-					IConstantsGlobal.LANGAGEFR);
+			lang = LANGAGEFR;
+			ActionLangage actionLangage = new ActionLangage(LANGAGEFR);
 			controller.actionOccured(actionLangage);
 		} else if (source == menuItemEN) {
-			ActionLangage actionLangage = new ActionLangage(
-					IConstantsGlobal.LANGAGEEN);
+			lang = LANGAGEEN;
+			ActionLangage actionLangage = new ActionLangage(LANGAGEEN);
 			controller.actionOccured(actionLangage);
 		} else if (source == soundButton) {
 			ActionSound actionSound = new ActionSound();
 			controller.actionOccured(actionSound);
-		} else if (source == menuHelp) {
-			GenericView helpView = new GenericView();
+		} else if (source == menuItemAbout) {
+			GenericView aboutView = new GenericView("ABOUT", lang);
+		} else if (source == menuItemDonate) {
+			GenericView donateView = new GenericView("DONATE", lang);
 		}
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable obs, Object bean) {
+		GameBean obj = (GameBean) bean;
+		if (obj.getLangage() == LANGAGEEN) {
+			rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
+			changeLabels();
+		} else if (obj.getLangage() == LANGAGEFR) {
+			rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
+			changeLabels();
+		}
+		if (obj.getSound() == SOUNDSON) {
+			soundButton.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/soundOn.gif")));
 
+		} else if (obj.getSound() == SOUNDSOFF) {
+			soundButton.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/soundOff.gif")));
+		}
+		switch (obj.getMsg()) {
+
+		case MSGPLAYERTURN:
+			infoLabel.setText(rLabels.getString("msg_player_turn"));
+			break;
+		case MSGIATURN:
+			infoLabel.setText(rLabels.getString("msg_ia_turn"));
+			break;
+		case MSGPLAYERGOOD:
+			infoLabel.setText(rLabels.getString("msg_player_good"));
+			break;
+		case MSGPLAYERBAD:
+			infoLabel.setText(rLabels.getString("msg_player_bad"));
+			break;
+		case MSGPLAYERBONUSTRIPLE:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_triple"));
+			break;
+		case MSGPLAYERBONUSSPRAY:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_spray"));
+			break;
+		case MSGPLAYERBONUSADD:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_add"));
+			break;
+		case MSGPLAYERBONUSRADAR:
+			infoLabel.setText(rLabels.getString("msg_player_bonus_radar"));
+			break;
+		case MSGPLAYERWIN:
+			infoLabel.setText(rLabels.getString("msg_player_win"));
+			break;
+		case MSGPLAYERLOOSE:
+			infoLabel.setText(rLabels.getString("msg_player_loose"));
+			break;
+		case MSGIABONUSTRIPLE:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_triple"));
+			break;
+		case MSGIABONUSSPRAY:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_spray"));
+			break;
+		case MSGIABONUSADD:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_add"));
+			break;
+		case MSGIABONUSRADAR:
+			infoLabel.setText(rLabels.getString("msg_ia_bonus_radar"));
+			break;
+		}
+		frame.getRootPane().revalidate();
 	}
 
 	public void actionFromGridPanel(Point point) {
