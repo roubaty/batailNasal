@@ -74,7 +74,7 @@ public class GridPanel extends JPanel implements IConstantView,
 		this.no_grid = no_grid;
 		my_table_visibility = new boolean[nb_case_x][nb_case_y];
 		my_table_shot = new boolean[nb_case_x][nb_case_y];
-		timer = new Timer(100, this);
+		timer = new Timer(50, this);
 		timer.setInitialDelay(500);
 		timer.start();
 	}
