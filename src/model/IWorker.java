@@ -18,4 +18,6 @@ public interface IWorker {
 
 	void addObserver(Observer IView);
 	
+	boolean isGameFinish();
+	
 }

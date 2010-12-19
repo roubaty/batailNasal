@@ -152,7 +152,7 @@ public class GridPanel extends JPanel implements IConstantView,
 				image_origine_size_x = SMALL_MORVE_SIZE_X;
 				image_origine_size_y = SMALL_MORVE_SIZE_Y;
 			}
-			if (i.getDirection() == 0) {
+			if (i.getDirection() == HORIZONTAL) {
 				// Draw a horizontally morve
 				drawAMorveHorivontally(g2d, i, img, image_origine_size_x,
 						image_origine_size_y);
@@ -653,7 +653,7 @@ public class GridPanel extends JPanel implements IConstantView,
 				morve.getStart_case_y());
 		Point line2_p2;
 		//System.out.println(morve);
-		if (morve.getDirection() == 1) {
+		if (morve.getDirection() == VERTICAL) {
 			line2_p2 = getCoordinateCase(morve.getStart_case_x() + morve.getSize(),
 					morve.getStart_case_y());
 			line2_p1.y += case_size_y / 2;
@@ -673,7 +673,7 @@ public class GridPanel extends JPanel implements IConstantView,
 			Point line1_p1 = getCoordinateCase(i.getStart_case_x(),
 					i.getStart_case_y());
 			Point line1_p2;
-			if (i.getDirection() == 0) {
+			if (i.getDirection() == HORIZONTAL) {
 				line1_p2 = getCoordinateCase(i.getStart_case_x() + i.getSize(),
 						i.getStart_case_y());
 				line1_p1.y += case_size_y / 2;
@@ -695,12 +695,12 @@ public class GridPanel extends JPanel implements IConstantView,
 			}
 
 		}
-		if (morve.getDirection() == 1) {
-			if (cross_over || (morve.getEnd_case_x() > NUMBER_CASE_X)) {
+		if (morve.getDirection() == VERTICAL) {
+			if (cross_over || (morve.getEnd_case_x() >= NUMBER_CASE_X)) {
 				return false;
 			}
 		} else {
-			if (cross_over || (morve.getEnd_case_y() > NUMBER_CASE_Y)) {
+			if (cross_over || (morve.getEnd_case_y() >= NUMBER_CASE_Y)) {
 				return false;
 			}
 		}

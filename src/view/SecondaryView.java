@@ -6,6 +6,7 @@
 
 package view;
 
+import constants.IConstantsGlobal;
 import controller.IController;
 
 import java.awt.Dimension;
@@ -18,7 +19,9 @@ import java.awt.event.WindowEvent;
 import java.util.*;
 import javax.swing.*;
 
-public class SecondaryView implements ActionListener, IView {
+import model.GameBean;
+
+public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 	// The components used by this view
 	private IController controller;
 	private JFrame frame;
@@ -72,8 +75,8 @@ public class SecondaryView implements ActionListener, IView {
 			logArea.setEditable(false);
 			logArea.setBounds(new Rectangle(0, 0, 400, 200));
 			imgLabel = new JLabel();
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/init.gif")));
+			//imgLabel.setIcon(new ImageIcon(getClass().getResource(
+			//		"../ressources/pictures/init.gif")));
 			logPanel = new JPanel();
 			logPanel.setBounds(new Rectangle(400, 0, 200, 200));
 			logPanel.add(imgLabel, null);
@@ -122,9 +125,9 @@ public class SecondaryView implements ActionListener, IView {
 	@Override
 	public void update(Observable obs, Object obj) {
 		// Affichage des log
-		int state = 0;
-		switch (state) {
-		case 1:
+		GameBean gb = (GameBean) obj;
+		switch (gb.getState()) {
+		/*case 19:
 			writeLog(rLabels.getString("msg_new"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/bonus_spray.gif")));
@@ -137,17 +140,17 @@ public class SecondaryView implements ActionListener, IView {
 			break;
 		case 4:
 			writeLog(rLabels.getString("msg_player_kill"));
-			break;
-		case 5:
+			break;*/
+		case TYPETRIPLE:
 			writeLog(rLabels.getString("msg_player_got_bonus_triple"));
 			break;
-		case 6:
+		case TYPESPRAY:
 			writeLog(rLabels.getString("msg_player_got_bonus_spray"));
 			break;
-		case 7:
+		case TYPESCAN:
 			writeLog(rLabels.getString("msg_player_got_bonus_radar"));
 			break;
-		case 8:
+		/*case 8:
 			writeLog(rLabels.getString("msg_player_use_bonus_triple"));
 			break;
 		case 9:
@@ -167,20 +170,20 @@ public class SecondaryView implements ActionListener, IView {
 			break;
 		case 14:
 			writeLog(rLabels.getString("msg_ia_kill"));
-			break;
-		case 15:
+			break;*/
+		case TYPEIATRIPLE:
 			writeLog(rLabels.getString("msg_ia_got_bonus_triple"));
 			break;
-		case 16:
+		case TYPEIASPRAY:
 			writeLog(rLabels.getString("msg_ia_got_bonus_spray"));
 			break;
-		case 17:
+		case TYPEIASCAN:
 			writeLog(rLabels.getString("msg_ia_got_bonus_radar"));
 			break;
-		case 18:
+		case TYPEIAADDMORVE:
 			writeLog(rLabels.getString("msg_ia_got_bonus_add"));
 			break;
-		case 19:
+		/*case 19:
 			writeLog(rLabels.getString("msg_ia_use_bonus_triple"));
 			break;
 		case 20:
@@ -191,14 +194,14 @@ public class SecondaryView implements ActionListener, IView {
 			break;
 		case 22:
 			writeLog(rLabels.getString("msg_ia_use_bonus_add"));
-			break;
-		case 23:
+			break;*/
+		case TYPEPLAYERWIN:
 			writeLog(rLabels.getString("msg_player_win"));
 			break;
-		case 24:
+		/*case 24:
 			writeLog(rLabels.getString("msg_player_use_bonus_radar"));
-			break;
-		case 25:
+			break;*/
+		case TYPEIAWIN:
 			writeLog(rLabels.getString("msg_player_loose"));
 			break;
 		}

@@ -41,6 +41,7 @@ public class Controller implements IController {
 	 *            the command line arguments
 	 */
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		Controller controller = new Controller();
 	}
 
@@ -52,16 +53,18 @@ public class Controller implements IController {
 		if (action instanceof ActionNewGame) {
 			worker.newGame();
 		}
-		if (action instanceof ActionPlace) {
-			worker.place(((ActionPlace) action).getStartX(),
-					((ActionPlace) action).getStartY(),
-					((ActionPlace) action).getEndX(),
-					((ActionPlace) action).getEndY());
-		}
-		if (action instanceof ActionShot) {
-			worker.shot(((ActionShot) action).getType(),
-					((ActionShot) action).getPosX(),
-					((ActionShot) action).getPosY());
+		if (!worker.isGameFinish()) {
+			if (action instanceof ActionPlace) {
+				worker.place(((ActionPlace) action).getStartX(),
+						((ActionPlace) action).getStartY(),
+						((ActionPlace) action).getEndX(),
+						((ActionPlace) action).getEndY());
+			}
+			if (action instanceof ActionShot) {
+				worker.shot(((ActionShot) action).getType(),
+						((ActionShot) action).getPosX(),
+						((ActionShot) action).getPosY());
+			}
 		}
 		if (action instanceof ActionSound) {
 			worker.changesound();

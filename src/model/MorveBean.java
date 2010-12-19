@@ -1,6 +1,8 @@
 package model;
 
-public class MorveBean {
+import constants.IConstantsGlobal;
+
+public class MorveBean implements IConstantsGlobal {
 	private final int start_case_x;
 	private final int start_case_y;
 	private final int size;
@@ -11,9 +13,9 @@ public class MorveBean {
 	public MorveBean(int start_case_x, int start_case_y, int end_case_x, int end_case_y){
 		this.start_case_x=start_case_x;
 		this.start_case_y=start_case_y;
-		this.size=-start_case_x-start_case_y+end_case_x+end_case_y;
+		this.size=(-start_case_x-start_case_y+end_case_x+end_case_y)+1;
 		System.out.println(size);
-		this.direction=(start_case_x==end_case_x) ? 1 :0 ;
+		this.direction=(start_case_x==end_case_x) ? VERTICAL : HORIZONTAL ;
 		this.end_case_x=end_case_x;
 		this.end_case_y=end_case_y;
 	}
@@ -21,13 +23,13 @@ public class MorveBean {
 		this.start_case_x=start_case_x;
 		this.start_case_y=start_case_y;
 		this.size=size;
-		this.direction=(direction)? 1 : 0;
+		this.direction=(direction)? VERTICAL : HORIZONTAL; // incoherence !! may be the problem of bad ia morve positioning
 		if(direction){
-			this.end_case_x=start_case_x+size;
+			this.end_case_x=start_case_x+(size-1);
 			this.end_case_y=start_case_y;
 		}else{
 			this.end_case_x=start_case_x;
-			this.end_case_y=start_case_y+size;
+			this.end_case_y=start_case_y+(size-1);
 		}
 	}
 	public int getStart_case_x() {

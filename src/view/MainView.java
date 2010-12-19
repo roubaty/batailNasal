@@ -78,6 +78,7 @@ public class MainView implements ActionListener, Observer, IView,
 	private ResourceBundle rLabels;
 	private JButton soundButton;
 	private static int lang;
+	private int oldState;
 
 	/**
 	 * Creates new form TextElementDisplayPanel
@@ -322,69 +323,78 @@ public class MainView implements ActionListener, Observer, IView,
 
 	public void update(Observable obs, Object bean) {
 		GameBean obj = (GameBean) bean;
-		if (obj.getLangage() == LANGAGEEN) {
-			rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
-			changeLabels();
-		} else if (obj.getLangage() == LANGAGEFR) {
-			rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
-			changeLabels();
+		if(obj.getState() != TYPECHANGELANGAGE && obj.getState() != TYPECHANGESOUNDS){
+			oldState = obj.getState();
 		}
-		if (obj.getSound() == SOUNDSON) {
-			soundButton.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/soundOn.gif")));
-
-		} else if (obj.getSound() == SOUNDSOFF) {
-			soundButton.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/soundOff.gif")));
-		}
-		switch (obj.getMsg()) {
-
-		case MSGPLAYERTURN:
+		switch (obj.getState()) {
+		case TYPENORMAL:
 			infoLabel.setText(rLabels.getString("msg_player_turn"));
 			break;
-		case MSGIATURN:
+		case TYPEIANORMAL:
 			infoLabel.setText(rLabels.getString("msg_ia_turn"));
 			break;
-		case MSGPLAYERGOOD:
+		/*case MSGPLAYERGOOD:
 			infoLabel.setText(rLabels.getString("msg_player_good"));
 			break;
 		case MSGPLAYERBAD:
 			infoLabel.setText(rLabels.getString("msg_player_bad"));
-			break;
-		case MSGPLAYERBONUSTRIPLE:
+			break;*/
+		case TYPETRIPLE:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_triple"));
 			break;
-		case MSGPLAYERBONUSSPRAY:
+		case TYPESPRAY:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_spray"));
 			break;
-		case MSGPLAYERBONUSADD:
+		case TYPEADDMORVE:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_add"));
 			break;
-		case MSGPLAYERBONUSRADAR:
+		case TYPESCAN:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_radar"));
 			break;
-		case MSGPLAYERWIN:
+		case TYPEPLAYERWIN:
 			infoLabel.setText(rLabels.getString("msg_player_win"));
 			break;
-		case MSGPLAYERLOOSE:
+		case TYPEIAWIN:
 			infoLabel.setText(rLabels.getString("msg_player_loose"));
 			break;
-		case MSGIABONUSTRIPLE:
+		case TYPEIATRIPLE:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_triple"));
 			break;
-		case MSGIABONUSSPRAY:
+		case TYPEIASPRAY:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_spray"));
 			break;
-		case MSGIABONUSADD:
+		case TYPEIAADDMORVE:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_add"));
 			break;
-		case MSGIABONUSRADAR:
+		case TYPEIASCAN:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_radar"));
+			break;
+		case TYPECHANGELANGAGE:
+			if (obj.getLangage() == LANGAGEEN) {
+				rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
+				changeLabels();
+			} else if (obj.getLangage() == LANGAGEFR) {
+				rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
+				changeLabels();
+			}
+			obj.setState(oldState);
+			break;
+		case TYPECHANGESOUNDS:
+			if (obj.getSound() == SOUNDSON) {
+				soundButton.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/soundOn.gif")));
+			} else if (obj.getSound() == SOUNDSOFF) {
+				soundButton.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/soundOff.gif")));
+			}
+			obj.setState(oldState);
 			break;
 		}
 		frame.getRootPane().revalidate();
-		grid1Panel.setState(obj.getState(), obj.getPlayerTableMorve(),grid1Panel.my_table_visibility, obj.getPlayerTableShot(),obj.getSizeMorve());
-		grid2Panel.setState(obj.getState(), obj.getIaTableMorve(), obj.getVisible(), obj.getIaTableShot(),obj.getSizeMorve());
+		if(obj.getState() != TYPECHANGELANGAGE && obj.getState() != TYPECHANGESOUNDS){
+			grid1Panel.setState(obj.getState(), obj.getPlayerTableMorve(),grid1Panel.my_table_visibility, obj.getPlayerTableShot(),obj.getSizeMorve());
+			grid2Panel.setState(obj.getState(), obj.getIaTableMorve(), obj.getVisible(), obj.getIaTableShot(),obj.getSizeMorve());
+		}
 	}
 
 	public void actionFromGridPanel(Point point) {
