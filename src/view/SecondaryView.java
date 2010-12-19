@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.*;
+
 import javax.swing.*;
 
 import model.GameBean;
@@ -75,8 +76,8 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 			logArea.setEditable(false);
 			logArea.setBounds(new Rectangle(0, 0, 400, 200));
 			imgLabel = new JLabel();
-			//imgLabel.setIcon(new ImageIcon(getClass().getResource(
-			//		"../ressources/pictures/init.gif")));
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/init.gif")));
 			logPanel = new JPanel();
 			logPanel.setBounds(new Rectangle(400, 0, 200, 200));
 			logPanel.add(imgLabel, null);
@@ -127,50 +128,66 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 		// Affichage des log
 		GameBean gb = (GameBean) obj;
 		switch (gb.getState()) {
-		/*case 19:
-			writeLog(rLabels.getString("msg_new"));
+		/*
+		 * case 19: writeLog(rLabels.getString("msg_new")); imgLabel.setIcon(new
+		 * ImageIcon(getClass().getResource(
+		 * "../ressources/pictures/bonus_spray.gif"))); break; case 2:
+		 * writeLog(rLabels.getString("msg_player_fail")); break; case 3:
+		 * writeLog(rLabels.getString("msg_player_touch")); break; case 4:
+		 * writeLog(rLabels.getString("msg_player_kill")); break;
+		 */
+		case TYPEIAPLAYED:
+			if (gb.isIaTouched()) {
+				writeLog(rLabels.getString("msg_ia_touch") + " -> "
+						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_ia_fail"));
+			}
+			break;
+		case TYPEPLAYERPLAYED:
+			if (gb.isPlayerTouched()) {
+				writeLog(rLabels.getString("msg_player_touch") + " -> "
+						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_player_fail"));
+			}
+			break;
+		case TYPENORMAL:
+			writeLog(rLabels.getString("msg_player_got_normal_shot"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/bonus_spray.gif")));
+					"../ressources/pictures/normal.gif")));
 			break;
-		case 2:
-			writeLog(rLabels.getString("msg_player_fail"));
+		case TYPEIANORMAL:
+			writeLog(rLabels.getString("msg_ia_got_normal_shot"));
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/normal.gif")));
 			break;
-		case 3:
-			writeLog(rLabels.getString("msg_player_touch"));
-			break;
-		case 4:
-			writeLog(rLabels.getString("msg_player_kill"));
-			break;*/
 		case TYPETRIPLE:
 			writeLog(rLabels.getString("msg_player_got_bonus_triple"));
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/bonus_triple_shot.gif")));
 			break;
 		case TYPESPRAY:
 			writeLog(rLabels.getString("msg_player_got_bonus_spray"));
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/bonus_spray.gif")));
 			break;
 		case TYPESCAN:
 			writeLog(rLabels.getString("msg_player_got_bonus_radar"));
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/bonus_debusquage.gif")));
 			break;
-		/*case 8:
-			writeLog(rLabels.getString("msg_player_use_bonus_triple"));
-			break;
-		case 9:
-			writeLog(rLabels.getString("msg_player_use_bonus_spray"));
-			break;
-		case 10:
-			writeLog(rLabels.getString("msg_player_use_bonus_radar"));
-			break;
-		case 11:
-			writeLog(rLabels.getString("msg_player_use_bonus_add"));
-			break;
-		case 12:
-			writeLog(rLabels.getString("msg_ia_fail"));
-			break;
-		case 13:
-			writeLog(rLabels.getString("msg_ia_touch"));
-			break;
-		case 14:
-			writeLog(rLabels.getString("msg_ia_kill"));
-			break;*/
+		/*
+		 * case 8: writeLog(rLabels.getString("msg_player_use_bonus_triple"));
+		 * break; case 9:
+		 * writeLog(rLabels.getString("msg_player_use_bonus_spray")); break;
+		 * case 10: writeLog(rLabels.getString("msg_player_use_bonus_radar"));
+		 * break; case 11:
+		 * writeLog(rLabels.getString("msg_player_use_bonus_add")); break; case
+		 * 12: writeLog(rLabels.getString("msg_ia_fail")); break; case 13:
+		 * writeLog(rLabels.getString("msg_ia_touch")); break; case 14:
+		 * writeLog(rLabels.getString("msg_ia_kill")); break;
+		 */
 		case TYPEIATRIPLE:
 			writeLog(rLabels.getString("msg_ia_got_bonus_triple"));
 			break;
@@ -183,27 +200,40 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 		case TYPEIAADDMORVE:
 			writeLog(rLabels.getString("msg_ia_got_bonus_add"));
 			break;
-		/*case 19:
-			writeLog(rLabels.getString("msg_ia_use_bonus_triple"));
-			break;
-		case 20:
-			writeLog(rLabels.getString("msg_ia_use_bonus_spray"));
-			break;
-		case 21:
-			writeLog(rLabels.getString("msg_ia_use_bonus_radar"));
-			break;
-		case 22:
-			writeLog(rLabels.getString("msg_ia_use_bonus_add"));
-			break;*/
+		/*
+		 * case 19: writeLog(rLabels.getString("msg_ia_use_bonus_triple"));
+		 * break; case 20:
+		 * writeLog(rLabels.getString("msg_ia_use_bonus_spray")); break; case
+		 * 21: writeLog(rLabels.getString("msg_ia_use_bonus_radar")); break;
+		 * case 22: writeLog(rLabels.getString("msg_ia_use_bonus_add")); break;
+		 */
 		case TYPEPLAYERWIN:
 			writeLog(rLabels.getString("msg_player_win"));
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/you_win.gif")));
 			break;
-		/*case 24:
-			writeLog(rLabels.getString("msg_player_use_bonus_radar"));
-			break;*/
+		/*
+		 * case 24: writeLog(rLabels.getString("msg_player_use_bonus_radar"));
+		 * break;
+		 */
 		case TYPEIAWIN:
 			writeLog(rLabels.getString("msg_player_loose"));
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+					"../ressources/pictures/you_lose.gif")));
+			break;
+
+		case TYPECHANGELANGAGE:
+			if (gb.getLangage() == LANGAGEEN) {
+				rLabels = ResourceBundle
+						.getBundle("properties/vue_secondaire_en");
+				changeLabels();
+			} else if (gb.getLangage() == LANGAGEFR) {
+				rLabels = ResourceBundle
+						.getBundle("properties/vue_secondaire_fr");
+				changeLabels();
+			}
 			break;
 		}
+		frame.getRootPane().revalidate();
 	}
 }

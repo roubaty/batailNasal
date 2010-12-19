@@ -9,13 +9,67 @@ public class GameBean implements IConstantsGlobal {
 	private int langage;
 	private int sound;
 	private int state;
-	private int msg;
 	private ArrayList<MorveBean> playerTableMorve = new ArrayList<MorveBean>();
 	private ArrayList<MorveBean> iaTableMorve = new ArrayList<MorveBean>();
 	private boolean[][] visible;
 	private boolean[][] playerTableShot;
 	private boolean[][] iaTableShot;
 	private int sizeMorve;
+	public boolean isPlayerTouched() {
+		return playerTouched;
+	}
+
+	public void setPlayerTouched(boolean playerTouched) {
+		this.playerTouched = playerTouched;
+	}
+
+	public boolean isIaTouched() {
+		return iaTouched;
+	}
+
+	public void setIaTouched(boolean iaTouched) {
+		this.iaTouched = iaTouched;
+	}
+
+	public int getPlayerCoordX() {
+		return playerCoordX;
+	}
+
+	public void setPlayerCoordX(int playerCoordX) {
+		this.playerCoordX = playerCoordX;
+	}
+
+	public int getPlayerCoordY() {
+		return playerCoordY;
+	}
+
+	public void setPlayerCoordY(int playerCoordY) {
+		this.playerCoordY = playerCoordY;
+	}
+
+	public int getIaCoordX() {
+		return iaCoordX;
+	}
+
+	public void setIaCoordX(int iaCoordX) {
+		this.iaCoordX = iaCoordX;
+	}
+
+	public int getIaCoordY() {
+		return iaCoordY;
+	}
+
+	public void setIaCoordY(int iaCoordY) {
+		this.iaCoordY = iaCoordY;
+	}
+
+	private boolean playerTouched;
+	private boolean iaTouched;	
+	private int playerCoordX;
+	private int playerCoordY;
+	private int iaCoordX;
+	private int iaCoordY;
+	
 
 	public int getState() {
 		return state;
@@ -79,14 +133,6 @@ public class GameBean implements IConstantsGlobal {
 
 	public void setSound(int sound) {
 		this.sound = sound;
-	}
-
-	public int getMsg() {
-		return msg;
-	}
-
-	public void setMsg(int msg) {
-		this.msg = msg;
 	}
 
 	public void setSizeMorve(int sizeMorve) {

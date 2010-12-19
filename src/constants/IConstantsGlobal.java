@@ -18,6 +18,8 @@ public interface IConstantsGlobal {
 	public static final int TYPEIASPRAY = 12;
 	public static final int TYPEIASCAN = 13;
 	public static final int TYPEIANORMAL = 14;
+	public static final int TYPEIAPLAYED = 15;
+	public static final int TYPEPLAYERPLAYED = 16;
 	public static final int TIMEIASLEEP = 1000;
 	public static final int LANGAGEEN = 0;
 	public static final int LANGAGEFR = 1;

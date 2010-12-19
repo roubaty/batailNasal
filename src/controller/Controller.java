@@ -34,6 +34,7 @@ public class Controller implements IController {
 		mainView = new MainView(this);
 		worker = new Worker(this);
 		worker.addObserver(mainView);
+		worker.addObserver(secondaryView);
 	}
 
 	/**

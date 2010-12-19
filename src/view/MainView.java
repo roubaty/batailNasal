@@ -188,7 +188,7 @@ public class MainView implements ActionListener, Observer, IView,
 			p2InfoLabel.setText(rLabels.getString("text_morve"));
 			p2NameLabel = new JLabel();
 			p2NameLabel.setBounds(new Rectangle(420, 30, 120, 40));
-			p2NameLabel.setText("Player 2");
+			p2NameLabel.setText(rLabels.getString("namep2"));
 			p2NameLabel.setFont(new Font("Serif", Font.BOLD, 24));
 			p1NoBigMorves = new JLabel();
 			p1NoBigMorves.setBounds(new Rectangle(290, 35, 40, 20));
@@ -213,7 +213,7 @@ public class MainView implements ActionListener, Observer, IView,
 			p1InfoLabel.setText(rLabels.getString("text_morve"));
 			p1NameLabel = new JLabel();
 			p1NameLabel.setBounds(new Rectangle(20, 30, 120, 40));
-			p1NameLabel.setText("Player 1");
+			p1NameLabel.setText(rLabels.getString("namep1"));
 			p1NameLabel.setFont(new Font("Serif", Font.BOLD, 24));
 			p1Panel = new JPanel();
 			p1Panel.setLayout(new GridBagLayout());
@@ -292,6 +292,8 @@ public class MainView implements ActionListener, Observer, IView,
 		p1MidMorveLabel.setText(rLabels.getString("text_middle"));
 		p1BigMorveLabel.setText(rLabels.getString("text_big"));
 		p1InfoLabel.setText(rLabels.getString("text_morve"));
+		p1NameLabel.setText(rLabels.getString("namep1"));
+		p2NameLabel.setText(rLabels.getString("namep2"));
 	}
 
 	@Override
@@ -315,15 +317,23 @@ public class MainView implements ActionListener, Observer, IView,
 			GenericView aboutView = new GenericView("ABOUT", lang);
 		} else if (source == menuItemDonate) {
 			GenericView donateView = new GenericView("DONATE", lang);
-		}else if(source == menuItemNew){
+		} else if (source == menuItemNew) {
 			ActionNewGame actionNewGame = new ActionNewGame();
+			p2NoLittleMorves.setText("3");
+			p2NoMidMorves.setText("2");
+			p2NoBigMorves.setText("1");
+			p1NoLittleMorves.setText("3");
+			p1NoMidMorves.setText("2");
+			p1NoBigMorves.setText("1");
 			controller.actionOccured(actionNewGame);
 		}
 	}
 
 	public void update(Observable obs, Object bean) {
 		GameBean obj = (GameBean) bean;
-		if(obj.getState() != TYPECHANGELANGAGE && obj.getState() != TYPECHANGESOUNDS){
+		int nbMorves;
+		if (obj.getState() != TYPECHANGELANGAGE
+				&& obj.getState() != TYPECHANGESOUNDS) {
 			oldState = obj.getState();
 		}
 		switch (obj.getState()) {
@@ -333,12 +343,6 @@ public class MainView implements ActionListener, Observer, IView,
 		case TYPEIANORMAL:
 			infoLabel.setText(rLabels.getString("msg_ia_turn"));
 			break;
-		/*case MSGPLAYERGOOD:
-			infoLabel.setText(rLabels.getString("msg_player_good"));
-			break;
-		case MSGPLAYERBAD:
-			infoLabel.setText(rLabels.getString("msg_player_bad"));
-			break;*/
 		case TYPETRIPLE:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_triple"));
 			break;
@@ -347,6 +351,9 @@ public class MainView implements ActionListener, Observer, IView,
 			break;
 		case TYPEADDMORVE:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_add"));
+			nbMorves = Integer.parseInt(p2NoLittleMorves.getText());
+			nbMorves++;
+			p2NoLittleMorves.setText(String.valueOf(nbMorves));
 			break;
 		case TYPESCAN:
 			infoLabel.setText(rLabels.getString("msg_player_bonus_radar"));
@@ -365,16 +372,21 @@ public class MainView implements ActionListener, Observer, IView,
 			break;
 		case TYPEIAADDMORVE:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_add"));
+			nbMorves = Integer.parseInt(p1NoLittleMorves.getText());
+			nbMorves++;
+			p1NoLittleMorves.setText(String.valueOf(nbMorves));
 			break;
 		case TYPEIASCAN:
 			infoLabel.setText(rLabels.getString("msg_ia_bonus_radar"));
 			break;
 		case TYPECHANGELANGAGE:
 			if (obj.getLangage() == LANGAGEEN) {
-				rLabels = ResourceBundle.getBundle("properties/vue_principale_en");
+				rLabels = ResourceBundle
+						.getBundle("properties/vue_principale_en");
 				changeLabels();
 			} else if (obj.getLangage() == LANGAGEFR) {
-				rLabels = ResourceBundle.getBundle("properties/vue_principale_fr");
+				rLabels = ResourceBundle
+						.getBundle("properties/vue_principale_fr");
 				changeLabels();
 			}
 			obj.setState(oldState);
@@ -391,9 +403,13 @@ public class MainView implements ActionListener, Observer, IView,
 			break;
 		}
 		frame.getRootPane().revalidate();
-		if(obj.getState() != TYPECHANGELANGAGE && obj.getState() != TYPECHANGESOUNDS){
-			grid1Panel.setState(obj.getState(), obj.getPlayerTableMorve(),grid1Panel.my_table_visibility, obj.getPlayerTableShot(),obj.getSizeMorve());
-			grid2Panel.setState(obj.getState(), obj.getIaTableMorve(), obj.getVisible(), obj.getIaTableShot(),obj.getSizeMorve());
+		if (obj.getState() != TYPECHANGELANGAGE
+				&& obj.getState() != TYPECHANGESOUNDS) {
+			grid1Panel.setState(obj.getState(), obj.getPlayerTableMorve(),
+					grid1Panel.my_table_visibility, obj.getPlayerTableShot(),
+					obj.getSizeMorve());
+			grid2Panel.setState(obj.getState(), obj.getIaTableMorve(),
+					obj.getVisible(), obj.getIaTableShot(), obj.getSizeMorve());
 		}
 	}
 
