@@ -32,6 +32,7 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 	private JScrollPane scroll;
 	private JLabel imgLabel;
 	private JPanel secondaryPanel = null;
+	private int oldState = INVALID;
 
 	/**
 	 * Creates new form TextElementDisplayPanel
@@ -123,6 +124,91 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 		 */
 	}
 
+	private void updateLog(GameBean gb) {
+		switch(oldState){
+		case TYPENORMAL:
+			if (gb.isIaTouched()) {
+				writeLog(rLabels.getString("msg_player_touch") + " -> "
+						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_player_fail") + " -> "
+						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			}
+			break;
+		case TYPEIANORMAL:
+			if (gb.isPlayerTouched()) {
+				writeLog(rLabels.getString("msg_ia_touch") + " -> "
+						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_ia_fail") + " -> "
+						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			}
+			break;
+		case TYPETRIPLE:
+			writeLog(rLabels.getString("msg_player_use_bonus_triple") + " -> "
+					+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			if (gb.isIaTouched()) {
+				writeLog(rLabels.getString("msg_player_touch") + " -> "
+						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_player_fail") + " -> "
+						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			}
+			break;
+		case TYPEIATRIPLE:
+			writeLog(rLabels.getString("msg_ia_use_bonus_triple") + " -> "
+					+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			if (gb.isPlayerTouched()) {
+				writeLog(rLabels.getString("msg_ia_touch") + " -> "
+						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_ia_fail") + " -> "
+						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			}
+			break;
+		case TYPESPRAY:
+			writeLog(rLabels.getString("msg_player_use_bonus_spray") + " -> "
+					+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			if (gb.isIaTouched()) {
+				writeLog(rLabels.getString("msg_player_touch") + " -> "
+						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_player_fail") + " -> "
+						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			}
+			break;
+		case TYPEIASPRAY:
+			writeLog(rLabels.getString("msg_ia_use_bonus_spray") + " -> "
+					+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			if (gb.isPlayerTouched()) {
+				writeLog(rLabels.getString("msg_ia_touch") + " -> "
+						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			} else {
+				writeLog(rLabels.getString("msg_ia_fail") + " -> "
+						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
+			}
+			break;
+		case TYPEADDMORVE_START:
+			// no messages ?
+			break;
+		case TYPEADDMORVE:
+			writeLog(rLabels.getString("msg_player_use_bonus_add") + " -> "
+					+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
+			break;
+		case TYPEIAADDMORVE:
+			writeLog(rLabels.getString("msg_ia_use_bonus_add"));
+			break;
+		case TYPESCAN:
+			// TODO in worker too
+			break;
+		case TYPEIASCAN:
+			//TODO in worker too
+			break;
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public void update(Observable obs, Object obj) {
 		// Affichage des log
@@ -136,68 +222,83 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 		 * writeLog(rLabels.getString("msg_player_touch")); break; case 4:
 		 * writeLog(rLabels.getString("msg_player_kill")); break;
 		 */
-		case TYPEIAPLAYED:
-			if (gb.isIaTouched()) {
-				writeLog(rLabels.getString("msg_ia_touch") + " -> "
-						+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
-			} else {
-				writeLog(rLabels.getString("msg_ia_fail"));
-			}
-			break;
-		case TYPEPLAYERPLAYED:
-			if (gb.isPlayerTouched()) {
-				writeLog(rLabels.getString("msg_player_touch") + " -> "
-						+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
-			} else {
-				writeLog(rLabels.getString("msg_player_fail"));
-			}
-			break;
 		case TYPENORMAL:
+			updateLog(gb);
+			oldState = TYPENORMAL;
 			writeLog(rLabels.getString("msg_player_got_normal_shot"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/normal.gif")));
 			break;
 		case TYPEIANORMAL:
+			updateLog(gb);
+			oldState = TYPEIANORMAL;
 			writeLog(rLabels.getString("msg_ia_got_normal_shot"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/normal.gif")));
 			break;
 		case TYPETRIPLE:
+			updateLog(gb);
+			oldState = TYPETRIPLE;
 			writeLog(rLabels.getString("msg_player_got_bonus_triple"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/bonus_triple_shot.gif")));
 			break;
 		case TYPESPRAY:
+			updateLog(gb);
+			oldState = TYPESPRAY;
 			writeLog(rLabels.getString("msg_player_got_bonus_spray"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/bonus_spray.gif")));
 			break;
 		case TYPESCAN:
+			updateLog(gb);
+			oldState = TYPESCAN;
 			writeLog(rLabels.getString("msg_player_got_bonus_radar"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/bonus_debusquage.gif")));
 			break;
-		/*
-		 * case 8: writeLog(rLabels.getString("msg_player_use_bonus_triple"));
-		 * break; case 9:
-		 * writeLog(rLabels.getString("msg_player_use_bonus_spray")); break;
-		 * case 10: writeLog(rLabels.getString("msg_player_use_bonus_radar"));
-		 * break; case 11:
-		 * writeLog(rLabels.getString("msg_player_use_bonus_add")); break; case
-		 * 12: writeLog(rLabels.getString("msg_ia_fail")); break; case 13:
-		 * writeLog(rLabels.getString("msg_ia_touch")); break; case 14:
-		 * writeLog(rLabels.getString("msg_ia_kill")); break;
-		 */
+		case TYPEADDMORVE:
+			updateLog(gb);
+			oldState = TYPEADDMORVE;
+			imgLabel.setIcon(new ImageIcon(getClass().getResource(
+				"../ressources/pictures/bonus_add_morve.gif")));
+			break;
+		case TYPEADDMORVE_START:
+			updateLog(gb);
+			oldState = TYPEADDMORVE_START;
+			// TODO ?
+			break;
+			/*
+			 * case 8:
+			 * writeLog(rLabels.getString("msg_player_use_bonus_triple"));
+			 * break; case 9:
+			 * writeLog(rLabels.getString("msg_player_use_bonus_spray")); break;
+			 * case 10:
+			 * writeLog(rLabels.getString("msg_player_use_bonus_radar")); break;
+			 * case 11: writeLog(rLabels.getString("msg_player_use_bonus_add"));
+			 * break; case 12: writeLog(rLabels.getString("msg_ia_fail"));
+			 * break; case 13: writeLog(rLabels.getString("msg_ia_touch"));
+			 * break; case 14: writeLog(rLabels.getString("msg_ia_kill"));
+			 * break;
+			 */
 		case TYPEIATRIPLE:
+			updateLog(gb);
+			oldState = TYPEIATRIPLE;
 			writeLog(rLabels.getString("msg_ia_got_bonus_triple"));
 			break;
 		case TYPEIASPRAY:
+			updateLog(gb);
+			oldState = TYPEIASPRAY;
 			writeLog(rLabels.getString("msg_ia_got_bonus_spray"));
 			break;
 		case TYPEIASCAN:
+			updateLog(gb);
+			oldState = TYPEIASCAN;
 			writeLog(rLabels.getString("msg_ia_got_bonus_radar"));
 			break;
 		case TYPEIAADDMORVE:
+			updateLog(gb);
+			oldState = TYPEIAADDMORVE;
 			writeLog(rLabels.getString("msg_ia_got_bonus_add"));
 			break;
 		/*
@@ -208,18 +309,22 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 		 * case 22: writeLog(rLabels.getString("msg_ia_use_bonus_add")); break;
 		 */
 		case TYPEPLAYERWIN:
+			updateLog(gb);
 			writeLog(rLabels.getString("msg_player_win"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/you_win.gif")));
+			oldState = INVALID;
 			break;
 		/*
 		 * case 24: writeLog(rLabels.getString("msg_player_use_bonus_radar"));
 		 * break;
 		 */
 		case TYPEIAWIN:
+			updateLog(gb);
 			writeLog(rLabels.getString("msg_player_loose"));
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/you_lose.gif")));
+			oldState = INVALID;
 			break;
 
 		case TYPECHANGELANGAGE:

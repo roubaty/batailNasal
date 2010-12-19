@@ -15,6 +15,13 @@ public class GameBean implements IConstantsGlobal {
 	private boolean[][] playerTableShot;
 	private boolean[][] iaTableShot;
 	private int sizeMorve;
+	private boolean playerTouched;
+	private boolean iaTouched;	
+	private int playerCoordX;
+	private int playerCoordY;
+	private int iaCoordX;
+	private int iaCoordY;
+	
 	public boolean isPlayerTouched() {
 		return playerTouched;
 	}
@@ -62,14 +69,6 @@ public class GameBean implements IConstantsGlobal {
 	public void setIaCoordY(int iaCoordY) {
 		this.iaCoordY = iaCoordY;
 	}
-
-	private boolean playerTouched;
-	private boolean iaTouched;	
-	private int playerCoordX;
-	private int playerCoordY;
-	private int iaCoordX;
-	private int iaCoordY;
-	
 
 	public int getState() {
 		return state;

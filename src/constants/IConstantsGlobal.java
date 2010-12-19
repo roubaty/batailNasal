@@ -3,6 +3,7 @@ package constants;
 public interface IConstantsGlobal {
 	public static final int NUMBER_CASE_X = 10;
 	public static final int NUMBER_CASE_Y = 10;
+	public static final int INVALID = -1;
 	public static final int TYPENORMAL = 0;
 	public static final int TYPETRIPLE = 1;
 	public static final int TYPESCAN = 2;
@@ -18,9 +19,7 @@ public interface IConstantsGlobal {
 	public static final int TYPEIASPRAY = 12;
 	public static final int TYPEIASCAN = 13;
 	public static final int TYPEIANORMAL = 14;
-	public static final int TYPEIAPLAYED = 15;
-	public static final int TYPEPLAYERPLAYED = 16;
-	public static final int TIMEIASLEEP = 1000;
+	//public static final int TIMEIASLEEP = 1000;
 	public static final int LANGAGEEN = 0;
 	public static final int LANGAGEFR = 1;
 	public static final int SOUNDSON = 0;
@@ -33,18 +32,4 @@ public interface IConstantsGlobal {
 	public static final int MAXHITDEFAULT = 22;
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 1;
-	public static final int MSGPLAYERTURN = 0;
-	public static final int MSGIATURN = 1;
-	public static final int MSGPLAYERGOOD = 2;
-	public static final int MSGPLAYERBAD = 3;
-	public static final int MSGPLAYERBONUSTRIPLE = 4;
-	public static final int MSGPLAYERBONUSSPRAY = 5;
-	public static final int MSGPLAYERBONUSADD = 6;
-	public static final int MSGPLAYERBONUSRADAR = 7;
-	public static final int MSGPLAYERWIN = 8;
-	public static final int MSGPLAYERLOOSE = 9;
-	public static final int MSGIABONUSTRIPLE = 10;
-	public static final int MSGIABONUSSPRAY = 11;
-	public static final int MSGIABONUSADD = 12;
-	public static final int MSGIABONUSRADAR = 13;
 }
