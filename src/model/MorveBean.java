@@ -23,7 +23,7 @@ public class MorveBean implements IConstantsGlobal {
 		this.start_case_x=start_case_x;
 		this.start_case_y=start_case_y;
 		this.size=size;
-		this.direction=(direction)? VERTICAL : HORIZONTAL; // incoherence !! may be the problem of bad ia morve positioning
+		this.direction=(direction)? HORIZONTAL : VERTICAL; // incoherence !! may be the problem of bad ia morve positioning
 		if(direction){
 			this.end_case_x=start_case_x+(size-1);
 			this.end_case_y=start_case_y;

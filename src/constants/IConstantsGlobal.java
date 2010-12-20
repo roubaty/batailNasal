@@ -27,8 +27,11 @@ public interface IConstantsGlobal {
 	public static final int SCAN_SIZE_X = 3;
 	public static final int SCAN_SIZE_Y = 3;
 	public static final int MORVESIZEBIG = 5;
+	public static final int NUMBERBIGMORVE = 1;
 	public static final int MORVESIZEMIDDLE = 4;
+	public static final int NUMBERMIDDLEMORVE = 2;
 	public static final int MORVESIZELITTLE = 3;
+	public static final int NUMBERITTLEMORVE = 3;
 	public static final int MAXHITDEFAULT = 22;
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 1;
