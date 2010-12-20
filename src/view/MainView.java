@@ -394,10 +394,10 @@ public class MainView implements ActionListener, Observer, IView,
 		case TYPECHANGESOUNDS:
 			if (obj.getSound() == SOUNDSON) {
 				soundButton.setIcon(new ImageIcon(getClass().getResource(
-						"../ressources/pictures/soundOn.gif")));
+						"../ressources/pictures/soundOff.gif")));
 			} else if (obj.getSound() == SOUNDSOFF) {
 				soundButton.setIcon(new ImageIcon(getClass().getResource(
-						"../ressources/pictures/soundOff.gif")));
+						"../ressources/pictures/soundOn.gif")));
 			}
 			obj.setState(oldState);
 			break;
