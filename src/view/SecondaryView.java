@@ -48,6 +48,7 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 		initFrame();
 		initComponents();
 		localInitialization();
+		frame.setResizable(false);
 		frame.getRootPane().revalidate();
 	}
 

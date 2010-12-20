@@ -46,6 +46,7 @@ public class GenericView implements ActionListener, IConstantsGlobal {
 		frame.pack();
 		frame.setLocation(300, 300);
 		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 
 	private JPanel getPanel() {

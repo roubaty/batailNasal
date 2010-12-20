@@ -96,6 +96,7 @@ public class MainView implements ActionListener, Observer, IView,
 		initFrame();
 		initComponents();
 		localInitialization();
+		frame.setResizable(false);
 		frame.getRootPane().revalidate();
 	}
 
