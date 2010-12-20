@@ -547,6 +547,7 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 					gb.setPlayerCoordX(posX);
 					gb.setPlayerCoordY(posY);
 					// controle si le joueur gagne
+					System.out.println("player shot : "+ countHitPlayer + "  : "+countMaxHitIA);
 					if (countHitPlayer >= countMaxHitIA) {
 						gb.setState(TYPEPLAYERWIN);
 						gameFinish = true;

@@ -104,7 +104,7 @@ public class GridPanel extends JPanel implements IConstantView,
 		drawMorve(g2d);
 		drawShot(g2d);
 		if (no_grid == 1) {
-			//drawVisibility(g2d);
+			drawVisibility(g2d);
 			drawGrid(g2d);
 			switch(state){
 				case TYPESCAN:drawScan(g2d);drawBorder(g2d);break;
