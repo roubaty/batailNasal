@@ -247,7 +247,28 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 	}
 
 	private void addIAMorve() {
-		MorveBean m;
+		MorveBean m = new MorveBean(1, 1, 3, true);
+		int[] morveCount = {NUMBERBIGMORVE,NUMBERMIDDLEMORVE,NUMBERITTLEMORVE};
+		int[] morveSize = {MORVESIZEBIG, MORVESIZEMIDDLE, MORVESIZELITTLE};
+		for (int i = 0; i < morveCount.length; i++) {
+			for (int j = 0; j < morveCount[i]; j++) {
+				do{
+					boolean direction = r.nextBoolean();
+					int start_x;
+					int start_y;
+					if(direction){
+						start_x = r.nextInt(NUMBER_CASE_X);
+						start_y = r.nextInt(NUMBER_CASE_Y-morveSize[i]+1);
+					}else{
+						start_x = r.nextInt(NUMBER_CASE_X-morveSize[i]+1);
+						start_y = r.nextInt(NUMBER_CASE_Y);
+					}
+					m = new MorveBean(start_x, start_y, morveSize[i], direction);
+				}while(!GridPanel.isValideAdd(m, gb.getIaTableMorve()));
+				gb.getIaTableMorve().add(m);
+			}
+		}
+		/*
 		short i = 0;
 		while (i < 6) {
 			int direction = r.nextInt(10);
@@ -347,7 +368,7 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 				}
 				break;
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -526,6 +547,7 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 					gb.setPlayerCoordX(posX);
 					gb.setPlayerCoordY(posY);
 					// controle si le joueur gagne
+					System.out.println("player shot : "+ countHitPlayer + "  : "+countMaxHitIA);
 					if (countHitPlayer >= countMaxHitIA) {
 						gb.setState(TYPEPLAYERWIN);
 						gameFinish = true;

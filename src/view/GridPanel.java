@@ -362,12 +362,8 @@ public class GridPanel extends JPanel implements IConstantView,
 			int image_origine_size_x;
 			int image_origine_size_y;
 			// Create the morve that is going to be print
-			if (ctrl) {
-				morve = new MorveBean(cas[0], cas[1], morve_size, false);
-			} else {
-				morve = new MorveBean(cas[0], cas[1], morve_size, true);
-			}
-			// TODO add constant
+			morve = new MorveBean(cas[0], cas[1], morve_size, ctrl);
+			
 			// choose the right picture from the morve size
 			if (morve.getSize() == MORVESIZEBIG) {
 				img = Toolkit.getDefaultToolkit().getImage(BIG_MORVE_URL);
@@ -383,7 +379,7 @@ public class GridPanel extends JPanel implements IConstantView,
 				image_origine_size_y = SMALL_MORVE_SIZE_Y;
 			}
 			// Draw the morve
-			if (ctrl) {
+			if (!ctrl) {
 				drawAMorveVertically(g2d, morve, img, image_origine_size_x,
 						image_origine_size_y);
 			} else {
@@ -392,7 +388,7 @@ public class GridPanel extends JPanel implements IConstantView,
 			}
 			// Draw a red rectangle around the morve if you can't add it
 			if (!isValideAdd(morve, my_table_movre)) {
-				if (!ctrl) {
+				if (ctrl) {
 					Point point = getCoordinateCase(cas[0], cas[1]);
 					g2d.fill(new Rectangle2D.Float(point.x, point.y,
 							case_size_x * morve_size, case_size_y));
@@ -653,7 +649,7 @@ public class GridPanel extends JPanel implements IConstantView,
 				morve.getStart_case_y());
 		Point line2_p2;
 		//System.out.println(morve);
-		if (morve.getDirection() == VERTICAL) {
+		if (morve.getDirection() == HORIZONTAL) {
 			line2_p2 = getCoordinateCase(morve.getStart_case_x() + morve.getSize(),
 					morve.getStart_case_y());
 			line2_p1.y += case_size_y / 2;
@@ -695,7 +691,7 @@ public class GridPanel extends JPanel implements IConstantView,
 			}
 
 		}
-		if (morve.getDirection() == VERTICAL) {
+		if (morve.getDirection() == HORIZONTAL) {
 			if (cross_over || (morve.getEnd_case_x() >= NUMBER_CASE_X)) {
 				return false;
 			}
