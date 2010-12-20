@@ -185,7 +185,7 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 						if (direction == HORIZONTAL) {
 							gb.getIaTableShot()[startX_morveIA + 1][startY_morveIA] = false;
 						} else {
-							gb.getIaTableShot()[startX_morveIA + 1][startY_morveIA + 1] = false;
+							gb.getIaTableShot()[startX_morveIA][startY_morveIA + 1] = false;
 						}
 						countMaxHitIA += 3;
 						break;
@@ -221,7 +221,10 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 				}
 				break;
 			default:
+				gb.setIaCoordX(shotX);
+				gb.setIaCoordY(shotY);
 				gb.setState(TYPEIASCAN);
+				updateViews();
 			}
 		} else {
 			// shot classique
@@ -380,12 +383,10 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 				this.addIAMorve();
 			}
 		} else {
-			// TODO add morve during game
+			// add morve during game
 			countMaxHitPlayer += 3;
 			gb.getPlayerTableShot()[startX][startY] = false;
 			gb.getPlayerTableShot()[endX][endY] = false;
-			gb.setPlayerCoordX(startX);
-			gb.setPlayerCoordY(startY);
 			if (m.getDirection() == HORIZONTAL) {
 				gb.getPlayerTableShot()[startX + 1][startY] = false;
 			} else {
@@ -396,6 +397,8 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 			// next step for player
 			gb.setState(TYPENORMAL);
 		}
+		gb.setPlayerCoordX(startX);
+		gb.setPlayerCoordY(startY);
 
 		updateViews();
 	}
@@ -420,6 +423,8 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 			}
 			break;
 		case TYPESCAN:
+			gb.setPlayerCoordX(posX);
+			gb.setPlayerCoordY(posY);
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3 - i; j++) {
 					setCaseVisibleTrue(posX - i, posY - j);
@@ -544,19 +549,18 @@ public class Worker extends Observable implements IWorker, IConstantsGlobal,
 				}
 			}
 		}
-		if (!gotYou && !gameFinish && last && countNormalShot < 4) {
+		if (!gotYou && !gameFinish && last) {
 			if (isPlayerShot) {
-				if (gb.getSound() == SOUNDON)
+				if (gb.getSound() == SOUNDON && countNormalShot < 4)
 					new WorkerSound("miss.wav", gb.getLangage()).start();
 				gb.setIaTouched(false);
 			} else {
 				gb.setPlayerTouched(false);
 			}
 		}
-		if (isPlayerShot && gotYou && !gameFinish && last
-				&& countNormalShot < 4) {
+		if (gotYou && !gameFinish && last) {
 			if (isPlayerShot) {
-				if (gb.getSound() == SOUNDON)
+				if (gb.getSound() == SOUNDON && countNormalShot < 4)
 					new WorkerSound("hit.wav", gb.getLangage()).start();
 				gb.setIaTouched(true);
 				

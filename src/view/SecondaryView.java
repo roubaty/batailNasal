@@ -24,15 +24,14 @@ import model.GameBean;
 
 public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 	// The components used by this view
-	private IController controller;
 	private JFrame frame;
 	private ResourceBundle rLabels;
 	private JPanel logPanel = null;
 	private TextArea logArea;
-	private JScrollPane scroll;
 	private JLabel imgLabel;
 	private JPanel secondaryPanel = null;
 	private int oldState = INVALID;
+	private int countTripleShot = 0;
 
 	/**
 	 * Creates new form TextElementDisplayPanel
@@ -42,8 +41,6 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 	 *            can use to process GUI actions
 	 */
 	public SecondaryView(IController controller2) {
-
-		this.controller = controller2;
 
 		rLabels = ResourceBundle.getBundle("properties/vue_secondaire_fr");
 
@@ -118,14 +115,14 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
+		// Object source = e.getSource();
 		/*
 		 * if(source == menuItemQuit){ System.exit(0); }
 		 */
 	}
 
 	private void updateLog(GameBean gb) {
-		switch(oldState){
+		switch (oldState) {
 		case TYPENORMAL:
 			if (gb.isIaTouched()) {
 				writeLog(rLabels.getString("msg_player_touch") + " -> "
@@ -189,7 +186,8 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 			}
 			break;
 		case TYPEADDMORVE_START:
-			// no messages ?
+			writeLog(rLabels.getString("msg_player_start_add") + " -> "
+					+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
 			break;
 		case TYPEADDMORVE:
 			writeLog(rLabels.getString("msg_player_use_bonus_add") + " -> "
@@ -199,10 +197,12 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 			writeLog(rLabels.getString("msg_ia_use_bonus_add"));
 			break;
 		case TYPESCAN:
-			// TODO in worker too
+			writeLog(rLabels.getString("msg_player_use_bonus_radar") + " -> "
+					+ gb.getPlayerCoordX() + " ; " + gb.getPlayerCoordY());
 			break;
 		case TYPEIASCAN:
-			//TODO in worker too
+			writeLog(rLabels.getString("msg_ia_use_bonus_radar") + " -> "
+					+ gb.getIaCoordX() + " ; " + gb.getIaCoordY());
 			break;
 		default:
 			break;
@@ -213,61 +213,69 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 	public void update(Observable obs, Object obj) {
 		// Affichage des log
 		GameBean gb = (GameBean) obj;
-		switch (gb.getState()) {
-		/*
-		 * case 19: writeLog(rLabels.getString("msg_new")); imgLabel.setIcon(new
-		 * ImageIcon(getClass().getResource(
-		 * "../ressources/pictures/bonus_spray.gif"))); break; case 2:
-		 * writeLog(rLabels.getString("msg_player_fail")); break; case 3:
-		 * writeLog(rLabels.getString("msg_player_touch")); break; case 4:
-		 * writeLog(rLabels.getString("msg_player_kill")); break;
-		 */
-		case TYPENORMAL:
-			updateLog(gb);
-			oldState = TYPENORMAL;
-			writeLog(rLabels.getString("msg_player_got_normal_shot"));
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/normal.gif")));
-			break;
-		case TYPEIANORMAL:
-			updateLog(gb);
-			oldState = TYPEIANORMAL;
-			writeLog(rLabels.getString("msg_ia_got_normal_shot"));
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/normal.gif")));
-			break;
-		case TYPETRIPLE:
-			updateLog(gb);
-			oldState = TYPETRIPLE;
-			writeLog(rLabels.getString("msg_player_got_bonus_triple"));
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/bonus_triple_shot.gif")));
-			break;
-		case TYPESPRAY:
-			updateLog(gb);
-			oldState = TYPESPRAY;
-			writeLog(rLabels.getString("msg_player_got_bonus_spray"));
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/bonus_spray.gif")));
-			break;
-		case TYPESCAN:
-			updateLog(gb);
-			oldState = TYPESCAN;
-			writeLog(rLabels.getString("msg_player_got_bonus_radar"));
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/bonus_debusquage.gif")));
-			break;
-		case TYPEADDMORVE:
-			updateLog(gb);
-			oldState = TYPEADDMORVE;
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-				"../ressources/pictures/bonus_add_morve.gif")));
-			break;
-		case TYPEADDMORVE_START:
-			updateLog(gb);
-			oldState = TYPEADDMORVE_START;
-			// TODO ?
-			break;
+		if (oldState != INVALID || gb.getState() == TYPEADDMORVE_START
+				|| gb.getState() == TYPECHANGELANGAGE) {
+			switch (gb.getState()) {
+			/*
+			 * case 19: writeLog(rLabels.getString("msg_new"));
+			 * imgLabel.setIcon(new ImageIcon(getClass().getResource(
+			 * "../ressources/pictures/bonus_spray.gif"))); break; case 2:
+			 * writeLog(rLabels.getString("msg_player_fail")); break; case 3:
+			 * writeLog(rLabels.getString("msg_player_touch")); break; case 4:
+			 * writeLog(rLabels.getString("msg_player_kill")); break;
+			 */
+			case TYPENORMAL:
+				updateLog(gb);
+				oldState = TYPENORMAL;
+				writeLog(rLabels.getString("msg_player_got_normal_shot"));
+				imgLabel.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/normal.gif")));
+				break;
+			case TYPEIANORMAL:
+				updateLog(gb);
+				oldState = TYPEIANORMAL;
+				writeLog(rLabels.getString("msg_ia_got_normal_shot"));
+				imgLabel.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/normal.gif")));
+				break;
+			case TYPETRIPLE:
+				updateLog(gb);
+				oldState = TYPETRIPLE;
+				if (countTripleShot == 0) {
+					writeLog(rLabels.getString("msg_player_got_bonus_triple"));
+					imgLabel.setIcon(new ImageIcon(getClass().getResource(
+							"../ressources/pictures/bonus_triple_shot.gif")));
+				}
+				countTripleShot++;
+				if (countTripleShot > 2) {
+					countTripleShot = 0;
+				}
+				break;
+			case TYPESPRAY:
+				updateLog(gb);
+				oldState = TYPESPRAY;
+				writeLog(rLabels.getString("msg_player_got_bonus_spray"));
+				imgLabel.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/bonus_spray.gif")));
+				break;
+			case TYPESCAN:
+				updateLog(gb);
+				oldState = TYPESCAN;
+				writeLog(rLabels.getString("msg_player_got_bonus_radar"));
+				imgLabel.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/bonus_debusquage.gif")));
+				break;
+			case TYPEADDMORVE:
+				updateLog(gb);
+				oldState = TYPEADDMORVE;
+				imgLabel.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/bonus_add_morve.gif")));
+				break;
+			case TYPEADDMORVE_START:
+				if (gb.getPlayerTableMorve().size() > 0)
+					updateLog(gb);
+				oldState = TYPEADDMORVE_START;
+				break;
 			/*
 			 * case 8:
 			 * writeLog(rLabels.getString("msg_player_use_bonus_triple"));
@@ -281,64 +289,70 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 			 * break; case 14: writeLog(rLabels.getString("msg_ia_kill"));
 			 * break;
 			 */
-		case TYPEIATRIPLE:
-			updateLog(gb);
-			oldState = TYPEIATRIPLE;
-			writeLog(rLabels.getString("msg_ia_got_bonus_triple"));
-			break;
-		case TYPEIASPRAY:
-			updateLog(gb);
-			oldState = TYPEIASPRAY;
-			writeLog(rLabels.getString("msg_ia_got_bonus_spray"));
-			break;
-		case TYPEIASCAN:
-			updateLog(gb);
-			oldState = TYPEIASCAN;
-			writeLog(rLabels.getString("msg_ia_got_bonus_radar"));
-			break;
-		case TYPEIAADDMORVE:
-			updateLog(gb);
-			oldState = TYPEIAADDMORVE;
-			writeLog(rLabels.getString("msg_ia_got_bonus_add"));
-			break;
-		/*
-		 * case 19: writeLog(rLabels.getString("msg_ia_use_bonus_triple"));
-		 * break; case 20:
-		 * writeLog(rLabels.getString("msg_ia_use_bonus_spray")); break; case
-		 * 21: writeLog(rLabels.getString("msg_ia_use_bonus_radar")); break;
-		 * case 22: writeLog(rLabels.getString("msg_ia_use_bonus_add")); break;
-		 */
-		case TYPEPLAYERWIN:
-			updateLog(gb);
-			writeLog(rLabels.getString("msg_player_win"));
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/you_win.gif")));
-			oldState = INVALID;
-			break;
-		/*
-		 * case 24: writeLog(rLabels.getString("msg_player_use_bonus_radar"));
-		 * break;
-		 */
-		case TYPEIAWIN:
-			updateLog(gb);
-			writeLog(rLabels.getString("msg_player_loose"));
-			imgLabel.setIcon(new ImageIcon(getClass().getResource(
-					"../ressources/pictures/you_lose.gif")));
-			oldState = INVALID;
-			break;
+			case TYPEIATRIPLE:
+				updateLog(gb);
+				oldState = TYPEIATRIPLE;
+				if (countTripleShot == 0) {
+					writeLog(rLabels.getString("msg_ia_got_bonus_triple"));
+				}
+				countTripleShot++;
+				if (countTripleShot > 2) {
+					countTripleShot = 0;
+				}
+				break;
+			case TYPEIASPRAY:
+				updateLog(gb);
+				oldState = TYPEIASPRAY;
+				writeLog(rLabels.getString("msg_ia_got_bonus_spray"));
+				break;
+			case TYPEIASCAN:
+				updateLog(gb);
+				oldState = TYPEIASCAN;
+				writeLog(rLabels.getString("msg_ia_got_bonus_radar"));
+				break;
+			case TYPEIAADDMORVE:
+				updateLog(gb);
+				oldState = TYPEIAADDMORVE;
+				writeLog(rLabels.getString("msg_ia_got_bonus_add"));
+				break;
+			/*
+			 * case 19: writeLog(rLabels.getString("msg_ia_use_bonus_triple"));
+			 * break; case 20:
+			 * writeLog(rLabels.getString("msg_ia_use_bonus_spray")); break;
+			 * case 21: writeLog(rLabels.getString("msg_ia_use_bonus_radar"));
+			 * break; case 22:
+			 * writeLog(rLabels.getString("msg_ia_use_bonus_add")); break;
+			 */
+			case TYPEPLAYERWIN:
+				writeLog(rLabels.getString("msg_player_win"));
+				imgLabel.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/you_win.gif")));
+				oldState = INVALID;
+				break;
+			/*
+			 * case 24:
+			 * writeLog(rLabels.getString("msg_player_use_bonus_radar")); break;
+			 */
+			case TYPEIAWIN:
+				writeLog(rLabels.getString("msg_player_loose"));
+				imgLabel.setIcon(new ImageIcon(getClass().getResource(
+						"../ressources/pictures/you_lose.gif")));
+				oldState = INVALID;
+				break;
 
-		case TYPECHANGELANGAGE:
-			if (gb.getLangage() == LANGAGEEN) {
-				rLabels = ResourceBundle
-						.getBundle("properties/vue_secondaire_en");
-				changeLabels();
-			} else if (gb.getLangage() == LANGAGEFR) {
-				rLabels = ResourceBundle
-						.getBundle("properties/vue_secondaire_fr");
-				changeLabels();
+			case TYPECHANGELANGAGE:
+				if (gb.getLangage() == LANGAGEEN) {
+					rLabels = ResourceBundle
+							.getBundle("properties/vue_secondaire_en");
+					changeLabels();
+				} else if (gb.getLangage() == LANGAGEFR) {
+					rLabels = ResourceBundle
+							.getBundle("properties/vue_secondaire_fr");
+					changeLabels();
+				}
+				break;
 			}
-			break;
+			frame.getRootPane().revalidate();
 		}
-		frame.getRootPane().revalidate();
 	}
 }
