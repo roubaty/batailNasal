@@ -27,11 +27,12 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 	private JFrame frame;
 	private ResourceBundle rLabels;
 	private JPanel logPanel = null;
-	private TextArea logArea;
+	private JTextArea logArea;
 	private JLabel imgLabel;
 	private JPanel secondaryPanel = null;
 	private int oldState = INVALID;
 	private int countTripleShot = 0;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Creates new form TextElementDisplayPanel
@@ -70,16 +71,23 @@ public class SecondaryView implements ActionListener, IView, IConstantsGlobal {
 	private JPanel getSecondaryPanel() {
 		if (secondaryPanel == null) {
 			secondaryPanel = new JPanel();
-			logArea = new TextArea();
-			logArea.setEditable(false);
+			logArea = new JTextArea();
 			logArea.setBounds(new Rectangle(0, 0, 400, 200));
+			logArea.setEditable(false);
+			logArea.setLineWrap(true);
+			logArea.setWrapStyleWord(true);
+			logArea.setText("Log :");
+			scrollPane = new JScrollPane(logArea,
+					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.setPreferredSize(new Dimension(400, 190));
 			imgLabel = new JLabel();
 			imgLabel.setIcon(new ImageIcon(getClass().getResource(
 					"../ressources/pictures/init.gif")));
 			logPanel = new JPanel();
 			logPanel.setBounds(new Rectangle(400, 0, 200, 200));
 			logPanel.add(imgLabel, null);
-			secondaryPanel.add(logArea, null);
+			secondaryPanel.add(scrollPane, null);
 			secondaryPanel.add(logPanel, null);
 		}
 		return secondaryPanel;
